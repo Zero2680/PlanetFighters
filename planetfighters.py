@@ -87,7 +87,20 @@ class Bola(Objeto):
 				else:
 					self.y = self.y + 0.25
 			self.DibujarObjeto()
+	
+	def Movimiento_Diamante(self, enemigo):
+		if self.check_colisiones(enemigo):
+			enemigo.vidas -= 1
+			self.y = -100
+		if self.y < 750:
+			if self.y == -100:
+				self.x = randrange(1, 13) * 100
+			self.y += 0.25
+		if self.y >= 750:
+			self.y = -100
+		self.DibujarObjeto()
 
+	#MARTE
 	def Disparar(self, enemigo, disparo1, disparo2, disparo3):			
 		self.puntuacion += 1
 		if enemigo.check_colisiones(disparo1):
@@ -106,6 +119,7 @@ class Bola(Objeto):
 		if self.puntuacion >= 300 and disparo3.x != 10000:
 			disparo3.Movimiento(enemigo)
 
+	#LA TIERRA
 	def DispararTeledirigido(self, enemigo, disparo):			
 		if enemigo.check_colisiones(disparo):
 			enemigo.vidas -= 5
@@ -113,12 +127,14 @@ class Bola(Objeto):
 		if disparo.x != 10000:       
 			disparo.MovimientoTeledirigido(enemigo)
 
+	#VENUS
 	def PonerTrampa(self, enemigo, trampa):
 		if enemigo.check_colisiones(trampa):
 			enemigo.vidas -= 3
 			trampa.x = 10000
 		trampa.DibujarObjeto()
 
+	#URANO
 	def DispararCongelacion(self, enemigo, disparo):
 		if enemigo.check_colisiones(disparo):
 			enemigo.vidas -= 3
@@ -134,7 +150,8 @@ class Bola(Objeto):
 			if disparo.puntuacion >= 5000:
 				enemigo.direccionx = disparo.direccionx
 				enemigo.direcciony = disparo.direcciony
-		
+
+	#SATURNO	
 	def GolpearEnArea(self, enemigo, area):
 		area.x = self.x - 10
 		area.y = self.y - 10
@@ -149,6 +166,40 @@ class Bola(Objeto):
 				enemigo.direccionx = -1
 			else:
 				enemigo.direccionx = 1
+
+	#MERCURIO
+	def Separarse(self, enemigo, secundaria):
+		if self.puntuacion == 0:
+			self.ancho = self.ancho / 2
+			self.largo = self.largo / 2
+			self.vidas = self.vidas / 2
+			self.puntuacion = 1
+		secundaria.Movimiento(enemigo)
+		Chocar(secundaria, enemigo)
+		barra_hp(screen, 1060, 60, secundaria.vidas, self.color)
+
+	#JUPITER
+	def Aumentar(self, enemigo):
+		if self.x <= 15:
+			self.ancho += 2
+			self.largo += 2
+		elif self.x >= 1265:
+			self.ancho += 2
+			self.largo += 2
+		if self.y <= 0:
+			self.ancho += 2
+			self.largo += 2
+		elif self.y >= 700:
+			self.ancho += 2
+			self.largo += 2
+		if self.check_colisiones(enemigo):
+			self.ancho += 2
+			self.largo += 2
+	
+	#NEPTUNO
+	def LluviaDeDiamantes(self, enemigo, diamante1, diamante2):
+		diamante1.Movimiento_Diamante(enemigo)
+		diamante2.Movimiento_Diamante(enemigo)
 
 def Chocar(plataforma, enemigo):
 	if plataforma.check_colisiones(enemigo):
@@ -169,12 +220,27 @@ def barra_hp(screen, x, y, hp, color):
 	calculo_barra = int((hp / 100)*largo)
 	draw.rect(screen, color, Rect(x, y, calculo_barra, ancho))
 
-plataforma = Bola(300,350,40,40, 1, 1, 0, (0,0,255), 100, 0)
-enemigo = Bola(940,350,40,40, 1, 1, 0, (255,0,0), 100, 1)
+plataforma = Bola(300,350,55,55, 1, 1, 0, (0,0,255), 100, 0)
+enemigo = Bola(940,350,55,55, 1, 1, 0, (255,0,0), 100, 1)
 timer = 0
+personaje1 = "Saturno"
+personaje2 = "Urano"
+mercurio = transform.scale(image.load("planetfighters_images/Mercurio.png"), (75, 75))
+venus = transform.scale(image.load("planetfighters_images/Venus.png"), (75, 75))
+latierra = transform.scale(image.load("planetfighters_images/LaTierra.png"), (75, 75))
+marte = transform.scale(image.load("planetfighters_images/Marte.png"), (75, 75))
+jupiter = transform.scale(image.load("planetfighters_images/Jupiter.png"), (75, 75))
+saturno = transform.scale(image.load("planetfighters_images/Saturno.png"), (125, 125))
+urano = transform.scale(image.load("planetfighters_images/Urano.png"), (75, 75))
+neptuno = transform.scale(image.load("planetfighters_images/Neptuno.png"), (75, 75))
+space = transform.scale(image.load("planetfighters_images/Space.png").convert(), (1280, 720))
+cohete1 = transform.scale(image.load("planetfighters_images/Cohete1.png"), (50, 50))
+cohete2 = transform.scale(image.load("planetfighters_images/Cohete2.png"), (50, 50))
+hielo1 = transform.scale(image.load("planetfighters_images/Hielo1.png"), (50, 50))
+hielo2 = transform.scale(image.load("planetfighters_images/Hielo2.png"), (50, 50))
 
 while True:
-	screen.fill((0, 0, 0)) 
+	screen.blit(space, [0, 0]) 
 	
 	plataforma.Movimiento(enemigo)
 	enemigo.Movimiento(plataforma)
@@ -184,20 +250,95 @@ while True:
 	barra_hp(screen, 50, 40, plataforma.vidas, (0,0,255))
 
 	timer += 1
+
 	if timer >= 3000:
 		if timer == 3000:
 			plataforma.puntuacion = 0
-			direccionx = choice([1, -1])
-			direcciony = choice([1, -1])
-			disparo1 = Bola(plataforma.x, plataforma.y, 10, 10, direccionx, direcciony, 0, (255, 255, 0), 1, plataforma.team)
-			disparo2 = Bola(plataforma.x, plataforma.y, 10, 10, direccionx, direcciony, 0, (255, 255, 0), 1, plataforma.team)
-			disparo3 = Bola(plataforma.x, plataforma.y, 10, 10, direccionx, direcciony, 0, (255, 255, 0), 1, plataforma.team)
-			disparo = Bola(enemigo.x, enemigo.y, 20, 20, enemigo.direccionx, enemigo.direcciony, 0, (0, 255, 255), 1, enemigo.team)
-			trampa = Bola(plataforma.x, plataforma.y, 25, 25, plataforma.direccionx, plataforma.direcciony, 0, (255, 125, 125), 1, plataforma.team)
-			congelacion = Bola(enemigo.x, enemigo.y, 20, 20, -enemigo.direccionx, -enemigo.direcciony, 0, (0, 255, 0), 1, enemigo.team)
-			area = Bola(plataforma.x, plataforma.y, 60, 60, plataforma.direccionx, plataforma.direcciony, 0, (125, 255, 125), 1, plataforma.team)
-		plataforma.GolpearEnArea(enemigo, area)
-		enemigo.DispararCongelacion(plataforma, congelacion)
+			if personaje1 == "Marte" or personaje2 == "Marte":
+				direccionx = choice([1, -1])
+				direcciony = choice([1, -1])
+				disparo1 = Bola(plataforma.x, plataforma.y, 10, 10, direccionx, direcciony, 0, (255, 255, 0), 1, plataforma.team)
+				disparo2 = Bola(plataforma.x, plataforma.y, 10, 10, direccionx, direcciony, 0, (255, 255, 0), 1, plataforma.team)
+				disparo3 = Bola(plataforma.x, plataforma.y, 10, 10, direccionx, direcciony, 0, (255, 255, 0), 1, plataforma.team)
+			if personaje1 == "La Tierra" or personaje2 == "La Tierra":
+				disparo = Bola(enemigo.x, enemigo.y, 20, 20, enemigo.direccionx, enemigo.direcciony, 0, (0, 255, 255), 1, enemigo.team)
+			if personaje1 == "Venus" or personaje2 == "Venus":
+				trampa = Bola(plataforma.x, plataforma.y, 25, 25, plataforma.direccionx, plataforma.direcciony, 0, (255, 125, 125), 1, plataforma.team)
+			if personaje1 == "Urano" or personaje2 == "Urano":
+				congelacion = Bola(enemigo.x, enemigo.y, 20, 20, -enemigo.direccionx, -enemigo.direcciony, 0, (0, 255, 0), 1, enemigo.team)
+			if personaje1 == "Saturno" or personaje2 == "Saturno":
+				area = Bola(plataforma.x-7.5, plataforma.y-7.5, 75, 75, plataforma.direccionx, plataforma.direcciony, 0, (125, 255, 125), 1, plataforma.team)
+			if personaje1 == "Mercurio" or personaje2 == "Mercurio":
+				secundaria = Bola(enemigo.x, enemigo.y, enemigo.ancho/2, enemigo.largo/2, -enemigo.direccionx, -enemigo.direcciony, 0, enemigo.color, enemigo.vidas/2, enemigo.team)
+			if personaje1 == "Neptuno" or personaje2 == "Neptuno":
+				diamante1 = Bola(0, -100, 10, 10, plataforma.direccionx, plataforma.direcciony, 0, (255, 125, 255), 1, plataforma.team)
+				diamante2 = Bola(0, -100, 10, 10, plataforma.direccionx, plataforma.direcciony, 0, (255, 125, 255), 1, plataforma.team)
+
+		if personaje1 == "Mercurio": 
+			plataforma.Separarse(enemigo, secundaria)
+			screen.blit(mercurio, [plataforma.x-10, plataforma.y-10])
+		elif personaje1 == "Venus": 
+			plataforma.PonerTrampa(enemigo, trampa)	
+			screen.blit(venus, [plataforma.x-10, plataforma.y-10])
+		elif personaje1 == "La Tierra": 
+			plataforma.DispararTeledirigido(enemigo, disparo)
+			screen.blit(latierra, [plataforma.x-10, plataforma.y-10])
+			if disparo.direccionx == -1:
+				screen.blit(cohete2, [disparo.x-15, disparo.y-15])
+			else:
+				screen.blit(cohete1, [disparo.x-15, disparo.y-15])
+		elif personaje1 == "Marte": 
+			plataforma.Disparar(enemigo, disparo1, disparo2, disparo3)
+			screen.blit(marte, [plataforma.x-10, plataforma.y-10])
+		elif personaje1 == "Jupiter": 
+			plataforma.Aumentar(enemigo)
+			screen.blit(jupiter, [plataforma.x-10, plataforma.y-10])
+		elif personaje1 == "Saturno": 
+			plataforma.GolpearEnArea(enemigo, area)
+			screen.blit(saturno, [plataforma.x-35, plataforma.y-35])
+		elif personaje1 == "Urano": 
+			plataforma.DispararCongelacion(enemigo, congelacion)
+			screen.blit(urano, [plataforma.x-10, plataforma.y-10])
+			if congelacion.direccionx == -1:
+				screen.blit(hielo2, [congelacion.x-15, congelacion.y-15])
+			else:
+				screen.blit(hielo1, [congelacion.x-15, congelacion.y-15])
+		elif personaje1 == "Neptuno": 
+			plataforma.LluviaDeDiamantes(enemigo, diamante1, diamante2)
+			screen.blit(neptuno, [plataforma.x-10, plataforma.y-10])
+
+		if personaje2 == "Mercurio": 
+			enemigo.Separarse(plataforma, secundaria)
+			screen.blit(mercurio, [enemigo.x-10, enemigo.y-10])
+		elif personaje2 == "Venus": 
+			enemigo.PonerTrampa(plataforma, trampa)	
+			screen.blit(venus, [enemigo.x-10, enemigo.y-10])
+		elif personaje2 == "La Tierra": 
+			enemigo.DispararTeledirigido(plataforma, disparo)
+			screen.blit(latierra, [enemigo.x-10, enemigo.y-10])
+			if disparo.direccionx == -1:
+				screen.blit(cohete2, [disparo.x-15, disparo.y-15])
+			else:
+				screen.blit(cohete1, [disparo.x-15, disparo.y-15])
+		elif personaje2 == "Marte": 
+			enemigo.Disparar(plataforma, disparo1, disparo2, disparo3)
+			screen.blit(marte, [enemigo.x-10, enemigo.y-10])
+		elif personaje2 == "Jupiter": 
+			enemigo.Aumentar(plataforma)
+			screen.blit(jupiter, [enemigo.x-10, enemigo.y-10])
+		elif personaje2 == "Saturno": 
+			enemigo.GolpearEnArea(plataforma, area)
+			screen.blit(saturno, [enemigo.x-35, enemigo.y-35])
+		elif personaje2 == "Urano": 
+			enemigo.DispararCongelacion(plataforma, congelacion)
+			screen.blit(urano, [enemigo.x-10, enemigo.y-10])
+			if congelacion.direccionx == -1:
+				screen.blit(hielo2, [congelacion.x-17.5, congelacion.y-15])
+			else:
+				screen.blit(hielo1, [congelacion.x-12.5, congelacion.y-15])
+		elif personaje2 == "Neptuno": 
+			enemigo.LluviaDeDiamantes(plataforma, diamante1, diamante2)
+			screen.blit(neptuno, [enemigo.x-10, enemigo.y-10])
 
 	for evento in event.get():
 		if evento.type==QUIT:
