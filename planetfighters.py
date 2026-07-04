@@ -214,21 +214,30 @@ def Chocar(plataforma, enemigo):
 		else:
 			enemigo.direccionx = 1
 
-def barra_hp(screen, x, y, hp, color):
+def barra_hp_izquierda(screen, x, y, hp, color):
 	largo = 165
 	ancho = 10
 	calculo_barra = int((hp / 100)*largo)
 	draw.rect(screen, color, Rect(x, y, calculo_barra, ancho))
 
+def barra_hp_derecha(screen, x, y, hp, color):
+	largo = 165
+	ancho = 10
+	calculo_barra = int((hp / 100)*largo)
+	x_barra = x + (largo - calculo_barra)
+	draw.rect(screen, color, Rect(x_barra, y, calculo_barra, ancho))
+
 plataforma = Bola(300,350,55,55, 1, 1, 0, (0,0,255), 100, 0)
 enemigo = Bola(940,350,55,55, 1, 1, 0, (255,0,0), 100, 1)
 timer = 0
-personaje1 = "Saturno"
+personaje1 = "Venus"
 personaje2 = "Urano"
 mercurio = transform.scale(image.load("planetfighters_images/Mercurio.png"), (75, 75))
 venus = transform.scale(image.load("planetfighters_images/Venus.png"), (75, 75))
 latierra = transform.scale(image.load("planetfighters_images/LaTierra.png"), (75, 75))
+minilatierra = transform.scale(image.load("planetfighters_images/LaTierra.png"), (25, 25))
 marte = transform.scale(image.load("planetfighters_images/Marte.png"), (75, 75))
+minimarte = transform.scale(image.load("planetfighters_images/Marte.png"), (25, 25))
 jupiter = transform.scale(image.load("planetfighters_images/Jupiter.png"), (75, 75))
 saturno = transform.scale(image.load("planetfighters_images/Saturno.png"), (125, 125))
 urano = transform.scale(image.load("planetfighters_images/Urano.png"), (75, 75))
@@ -238,6 +247,10 @@ cohete1 = transform.scale(image.load("planetfighters_images/Cohete1.png"), (50, 
 cohete2 = transform.scale(image.load("planetfighters_images/Cohete2.png"), (50, 50))
 hielo1 = transform.scale(image.load("planetfighters_images/Hielo1.png"), (50, 50))
 hielo2 = transform.scale(image.load("planetfighters_images/Hielo2.png"), (50, 50))
+roca = transform.scale(image.load("planetfighters_images/Roca.png"), (30, 30))
+saturno2 = transform.scale(image.load("planetfighters_images/Saturno2.png"), (125, 125))
+totem = transform.scale(image.load("planetfighters_images/Totem.png"), (75, 75))
+barra = transform.scale(image.load("planetfighters_images/Bar.png"), (175, 20))
 
 while True:
 	screen.blit(space, [0, 0]) 
@@ -246,8 +259,12 @@ while True:
 	enemigo.Movimiento(plataforma)
 	Chocar(plataforma, enemigo)
 
-	barra_hp(screen, 1060, 40, enemigo.vidas, (255,0,0))
-	barra_hp(screen, 50, 40, plataforma.vidas, (0,0,255))
+	barra_hp_derecha(screen, 1060, 40, enemigo.vidas, (255,0,0))
+	barra_hp_izquierda(screen, 50, 40, plataforma.vidas, (0,0,255))
+	screen.blit(barra, [44, 35])
+	screen.blit(minilatierra, [27, 30])
+	screen.blit(barra, [1054, 35])
+	screen.blit(minimarte, [1221, 30])
 
 	timer += 1
 
@@ -280,6 +297,7 @@ while True:
 		elif personaje1 == "Venus": 
 			plataforma.PonerTrampa(enemigo, trampa)	
 			screen.blit(venus, [plataforma.x-10, plataforma.y-10])
+			screen.blit(totem, [trampa.x-25, trampa.y-30])
 		elif personaje1 == "La Tierra": 
 			plataforma.DispararTeledirigido(enemigo, disparo)
 			screen.blit(latierra, [plataforma.x-10, plataforma.y-10])
@@ -290,11 +308,15 @@ while True:
 		elif personaje1 == "Marte": 
 			plataforma.Disparar(enemigo, disparo1, disparo2, disparo3)
 			screen.blit(marte, [plataforma.x-10, plataforma.y-10])
+			screen.blit(roca, [disparo1.x-10, disparo1.y-10])
+			screen.blit(roca, [disparo2.x-10, disparo2.y-10])
+			screen.blit(roca, [disparo3.x-10, disparo3.y-10])
 		elif personaje1 == "Jupiter": 
 			plataforma.Aumentar(enemigo)
 			screen.blit(jupiter, [plataforma.x-10, plataforma.y-10])
 		elif personaje1 == "Saturno": 
 			plataforma.GolpearEnArea(enemigo, area)
+			screen.blit(saturno2, [plataforma.x-35, plataforma.y-35])
 			screen.blit(saturno, [plataforma.x-35, plataforma.y-35])
 		elif personaje1 == "Urano": 
 			plataforma.DispararCongelacion(enemigo, congelacion)
@@ -313,6 +335,7 @@ while True:
 		elif personaje2 == "Venus": 
 			enemigo.PonerTrampa(plataforma, trampa)	
 			screen.blit(venus, [enemigo.x-10, enemigo.y-10])
+			screen.blit(totem, [trampa.x, trampa.y])
 		elif personaje2 == "La Tierra": 
 			enemigo.DispararTeledirigido(plataforma, disparo)
 			screen.blit(latierra, [enemigo.x-10, enemigo.y-10])
@@ -323,11 +346,15 @@ while True:
 		elif personaje2 == "Marte": 
 			enemigo.Disparar(plataforma, disparo1, disparo2, disparo3)
 			screen.blit(marte, [enemigo.x-10, enemigo.y-10])
+			screen.blit(roca, [disparo1.x-10, disparo1.y-10])
+			screen.blit(roca, [disparo2.x-10, disparo2.y-10])
+			screen.blit(roca, [disparo3.x-10, disparo3.y-10])
 		elif personaje2 == "Jupiter": 
 			enemigo.Aumentar(plataforma)
 			screen.blit(jupiter, [enemigo.x-10, enemigo.y-10])
 		elif personaje2 == "Saturno": 
 			enemigo.GolpearEnArea(plataforma, area)
+			screen.blit(saturno2, [plataforma.x-35, plataforma.y-35])
 			screen.blit(saturno, [enemigo.x-35, enemigo.y-35])
 		elif personaje2 == "Urano": 
 			enemigo.DispararCongelacion(plataforma, congelacion)
