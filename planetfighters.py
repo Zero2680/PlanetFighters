@@ -244,8 +244,8 @@ timer = 0
 timer_plataforma = 0
 timer_enemigo = 0
 inicial = True
-personaje1 = "Neptuno"
-personaje2 = "Marte"
+personaje1 = "Marte"
+personaje2 = "Urano"
 mercurio = transform.scale(image.load("planetfighters_images/Mercurio.png"), (75, 75))
 secundaria_mercurio = transform.scale(image.load("planetfighters_images/Mercurio.png"), (50, 50))
 minimercurio = transform.scale(image.load("planetfighters_images/Mercurio.png"), (25, 25))
@@ -273,6 +273,18 @@ saturno2 = transform.scale(image.load("planetfighters_images/Saturno2.png"), (12
 totem = transform.scale(image.load("planetfighters_images/Totem.png"), (75, 75))
 diamante = transform.scale(image.load("planetfighters_images/Diamante.png"), (75, 75))
 barra = transform.scale(image.load("planetfighters_images/Barra.png"), (175, 20))
+explosion_cohete = transform.scale(image.load("planetfighters_images/ExplosionCohete.png"), (50, 50))
+explosion_cohete2 = transform.scale(image.load("planetfighters_images/ExplosionCohete2.png"), (50, 50))
+explosion_cohete3 = transform.scale(image.load("planetfighters_images/ExplosionCohete3.png"), (50, 50))
+explosion_roca = transform.scale(image.load("planetfighters_images/ExplosionRoca.png"), (25, 25))
+explosion_roca2 = transform.scale(image.load("planetfighters_images/ExplosionRoca2.png"), (25, 25))
+explosion_roca3 = transform.scale(image.load("planetfighters_images/ExplosionRoca3.png"), (25, 25))
+explosion_hielo = transform.scale(image.load("planetfighters_images/ExplosionHielo.png"), (50, 50))
+explosion_hielo2 = transform.scale(image.load("planetfighters_images/ExplosionHielo2.png"), (50, 50))
+explosion_hielo3 = transform.scale(image.load("planetfighters_images/ExplosionHielo3.png"), (50, 50))
+explosion_trampa = transform.scale(image.load("planetfighters_images/ExplosionTrampa.png"), (50, 50))
+explosion_trampa2 = transform.scale(image.load("planetfighters_images/ExplosionTrampa2.png"), (50, 50))
+explosion_trampa3 = transform.scale(image.load("planetfighters_images/ExplosionTrampa3.png"), (50, 50))
 disparo_x = 10001
 cohete_x = 10001
 trampa_x = 10001
@@ -478,6 +490,7 @@ while True:
 			if timer == 1 and inicial == True:
 				inicial = False
 
+	#PLATAFORMA
 	if personaje1 == "Mercurio": 
 		plataforma.Separarse(enemigo, secundaria)
 		screen.blit(secundaria_mercurio, [plataforma.x-10, plataforma.y-10])
@@ -485,52 +498,94 @@ while True:
 	elif personaje1 == "Venus": 
 		if timer_plataforma >= 0 and timer_plataforma <= 6000:
 			plataforma.PonerTrampa(enemigo, trampa1)	
+			if timer_plataforma >= 5750:
+				if timer_plataforma <= 5825:
+					screen.blit(explosion_trampa, [trampa1.x-15, trampa1.y-15])
+				elif timer_plataforma <= 5900:
+					screen.blit(explosion_trampa2, [trampa1.x-15, trampa1.y-15])
+				else:
+					screen.blit(explosion_trampa3, [trampa1.x-15, trampa1.y-15])
 			if timer_plataforma >= 6000 and trampa1.x != 10000:
 				trampa1.x = 10000
 		if timer_plataforma >= 2000 and timer_plataforma <= 8000:
 			plataforma.PonerTrampa(enemigo, trampa2)	
+			if timer_plataforma >= 7750:
+				if timer_plataforma <= 7825:
+					screen.blit(explosion_trampa, [trampa2.x-15, trampa2.y-15])
+				elif timer_plataforma <= 7900:
+					screen.blit(explosion_trampa2, [trampa2.x-15, trampa2.y-15])
+				else:
+					screen.blit(explosion_trampa3, [trampa2.x-15, trampa2.y-15])
 			if timer_plataforma >= 8000 and trampa2.x != 10000:
 				trampa2.x = 10000
 		if timer_plataforma >= 4000 and timer_plataforma <= 10000:
-			plataforma.PonerTrampa(enemigo, trampa3)	
+			plataforma.PonerTrampa(enemigo, trampa3)
+			if timer_plataforma >= 9750:
+				if timer_plataforma <= 9825:
+					screen.blit(explosion_trampa, [trampa3.x-15, trampa3.y-15])
+				elif timer_plataforma <= 9900:
+					screen.blit(explosion_trampa2, [trampa3.x-15, trampa3.y-15])
+				else:
+					screen.blit(explosion_trampa3, [trampa3.x-15, trampa3.y-15])
 			if timer_plataforma >= 10000 and trampa3.x != 10000:
 				trampa3.x = 10000
 		if timer_plataforma >= 10000:
 			timer_plataforma = 0
 		screen.blit(venus, [plataforma.x-10, plataforma.y-10])
-		if trampa1.x != 10000 and timer_plataforma >= 0:
+		if trampa1.x != 10000 and timer_plataforma >= 0 and timer_plataforma <= 5750:
 			screen.blit(totem, [trampa1.x-25, trampa1.y-30])
-		if trampa2.x != 10000 and timer_plataforma >= 2000:
+		if trampa2.x != 10000 and timer_plataforma >= 2000 and timer_plataforma <= 7750:
 			screen.blit(totem, [trampa2.x-25, trampa2.y-30])
-		if trampa3.x != 10000 and timer_plataforma >= 4000:
+		if trampa3.x != 10000 and timer_plataforma >= 4000 and timer_plataforma <= 9750:
 			screen.blit(totem, [trampa3.x-25, trampa3.y-30])
 	elif personaje1 == "La Tierra": 
 		if timer_plataforma >= 0 and timer_plataforma <= 6000:
 			plataforma.DispararTeledirigido(enemigo, disparo1)
+			if timer_plataforma >= 5750:
+				if timer_plataforma <= 5825:
+					screen.blit(explosion_cohete, [disparo1.x-15, disparo1.y-15])
+				elif timer_plataforma <= 5900:
+					screen.blit(explosion_cohete2, [disparo1.x-15, disparo1.y-15])
+				else:
+					screen.blit(explosion_cohete3, [disparo1.x-15, disparo1.y-15])
 			if timer_plataforma >= 6000 and disparo1.x != 10000:
 				disparo1.x = 10000
 		if timer_plataforma >= 2000 and timer_plataforma <= 8000:
 			plataforma.DispararTeledirigido(enemigo, disparo2)
+			if timer_plataforma >= 7750:
+				if timer_plataforma <= 7825:
+					screen.blit(explosion_cohete, [disparo2.x-15, disparo2.y-15])
+				elif timer_plataforma <= 7900:
+					screen.blit(explosion_cohete2, [disparo2.x-15, disparo2.y-15])
+				else:
+					screen.blit(explosion_cohete3, [disparo2.x-15, disparo2.y-15])
 			if timer_plataforma >= 8000 and disparo2.x != 10000:
 				disparo2.x = 10000
 		if timer_plataforma >= 4000 and timer_plataforma <= 10000:
 			plataforma.DispararTeledirigido(enemigo, disparo3)
+			if timer_plataforma >= 9750:
+				if timer_plataforma <= 9825:
+					screen.blit(explosion_cohete, [disparo3.x-15, disparo3.y-15])
+				elif timer_plataforma <= 9900:
+					screen.blit(explosion_cohete2, [disparo3.x-15, disparo3.y-15])
+				else:
+					screen.blit(explosion_cohete3, [disparo3.x-15, disparo3.y-15])
 			if timer_plataforma >= 10000 and disparo3.x != 10000:
 				disparo3.x = 10000
 		if timer_plataforma >= 10000:
 			timer_plataforma = 0
 		screen.blit(latierra, [plataforma.x-10, plataforma.y-10])
-		if disparo1.x != 10000 and timer_plataforma >= 0:
+		if disparo1.x != 10000 and timer_plataforma >= 0 and timer_plataforma <= 5750:
 			if disparo1.direccionx == -1:
 				screen.blit(cohete2, [disparo1.x-15, disparo1.y-15])
 			else:
 				screen.blit(cohete1, [disparo1.x-15, disparo1.y-15])
-		if disparo2.x != 10000 and timer_plataforma >= 2000:
+		if disparo2.x != 10000 and timer_plataforma >= 2000 and timer_plataforma <= 7750:
 			if disparo2.direccionx == -1:
 				screen.blit(cohete2, [disparo2.x-15, disparo2.y-15])
 			else:
 				screen.blit(cohete1, [disparo2.x-15, disparo2.y-15])
-		if disparo3.x != 10000 and timer_plataforma >= 4000:
+		if disparo3.x != 10000 and timer_plataforma >= 4000 and timer_plataforma <= 9750:
 			if disparo3.direccionx == -1:
 				screen.blit(cohete2, [disparo3.x-15, disparo3.y-15])
 			else:
@@ -538,18 +593,57 @@ while True:
 	elif personaje1 == "Marte": 
 		if timer_plataforma >= 0 and timer_plataforma <= 6000:
 			plataforma.Disparar(enemigo, meteorito1, meteorito2, meteorito3)
+			if timer_plataforma >= 5750:
+				if timer_plataforma <= 5825:
+					screen.blit(explosion_roca, [meteorito1.x-10, meteorito1.y-10])
+					screen.blit(explosion_roca, [meteorito2.x-10, meteorito2.y-10])
+					screen.blit(explosion_roca, [meteorito3.x-10, meteorito3.y-10])
+				elif timer_plataforma <= 5900:
+					screen.blit(explosion_roca2, [meteorito1.x-10, meteorito1.y-10])
+					screen.blit(explosion_roca2, [meteorito2.x-10, meteorito2.y-10])
+					screen.blit(explosion_roca2, [meteorito3.x-10, meteorito3.y-10])
+				else:
+					screen.blit(explosion_roca3, [meteorito1.x-10, meteorito1.y-10])
+					screen.blit(explosion_roca3, [meteorito2.x-10, meteorito2.y-10])
+					screen.blit(explosion_roca3, [meteorito3.x-10, meteorito3.y-10])
 			if timer_plataforma >= 6000 and (meteorito1.x != 10000 or meteorito2.x != 10000 or meteorito3.x != 10000):
 				meteorito1.x = 10000
 				meteorito2.x = 10000
 				meteorito3.x = 10000
 		if timer_plataforma >= 2000 and timer_plataforma <= 8000:
 			plataforma.Disparar(enemigo, meteorito4, meteorito5, meteorito6)
+			if timer_plataforma >= 7750:
+				if timer_plataforma <= 7825:
+					screen.blit(explosion_roca, [meteorito4.x-10, meteorito4.y-10])
+					screen.blit(explosion_roca, [meteorito5.x-10, meteorito5.y-10])
+					screen.blit(explosion_roca, [meteorito6.x-10, meteorito6.y-10])
+				elif timer_plataforma <= 7900:
+					screen.blit(explosion_roca2, [meteorito4.x-10, meteorito4.y-10])
+					screen.blit(explosion_roca2, [meteorito5.x-10, meteorito5.y-10])
+					screen.blit(explosion_roca2, [meteorito6.x-10, meteorito6.y-10])
+				else:
+					screen.blit(explosion_roca3, [meteorito4.x-10, meteorito4.y-10])
+					screen.blit(explosion_roca3, [meteorito5.x-10, meteorito5.y-10])
+					screen.blit(explosion_roca3, [meteorito6.x-10, meteorito6.y-10])
 			if timer_plataforma >= 8000 and (meteorito4.x != 10000 or meteorito5.x != 10000 or meteorito6.x != 10000):
 				meteorito4.x = 10000
 				meteorito5.x = 10000
 				meteorito6.x = 10000
 		if timer_plataforma >= 4000 and timer_plataforma <= 10000:
 			plataforma.Disparar(enemigo, meteorito7, meteorito8, meteorito9)
+			if timer_plataforma >= 9750:
+				if timer_plataforma <= 9825:
+					screen.blit(explosion_roca, [meteorito7.x-10, meteorito7.y-10])
+					screen.blit(explosion_roca, [meteorito8.x-10, meteorito8.y-10])
+					screen.blit(explosion_roca, [meteorito9.x-10, meteorito9.y-10])
+				elif timer_plataforma <= 9900:
+					screen.blit(explosion_roca2, [meteorito7.x-10, meteorito7.y-10])
+					screen.blit(explosion_roca2, [meteorito8.x-10, meteorito8.y-10])
+					screen.blit(explosion_roca2, [meteorito9.x-10, meteorito8.y-10])
+				else:
+					screen.blit(explosion_roca3, [meteorito7.x-10, meteorito7.y-10])
+					screen.blit(explosion_roca3, [meteorito8.x-10, meteorito8.y-10])
+					screen.blit(explosion_roca3, [meteorito9.x-10, meteorito9.y-10])
 			if timer_plataforma >= 10000 and (meteorito7.x != 10000 or meteorito8.x != 10000 or meteorito9.x != 10000):
 				meteorito7.x = 10000
 				meteorito8.x = 10000
@@ -557,15 +651,15 @@ while True:
 		if timer_plataforma >= 10000:
 			timer_plataforma = 0
 		screen.blit(marte, [plataforma.x-10, plataforma.y-10])
-		if meteorito1.x != 10000 and timer_plataforma >= 0: screen.blit(roca, [meteorito1.x-10, meteorito1.y-10])
-		if meteorito2.x != 10000 and timer_plataforma >= 0: screen.blit(roca, [meteorito2.x-10, meteorito2.y-10])
-		if meteorito3.x != 10000 and timer_plataforma >= 0: screen.blit(roca, [meteorito3.x-10, meteorito3.y-10])
-		if meteorito4.x != 10000 and timer_plataforma >= 2000: screen.blit(roca, [meteorito4.x-10, meteorito4.y-10])
-		if meteorito5.x != 10000 and timer_plataforma >= 2000: screen.blit(roca, [meteorito5.x-10, meteorito5.y-10])
-		if meteorito6.x != 10000 and timer_plataforma >= 2000: screen.blit(roca, [meteorito6.x-10, meteorito6.y-10])
-		if meteorito7.x != 10000 and timer_plataforma >= 4000: screen.blit(roca, [meteorito7.x-10, meteorito7.y-10])
-		if meteorito8.x != 10000 and timer_plataforma >= 4000: screen.blit(roca, [meteorito8.x-10, meteorito8.y-10])
-		if meteorito9.x != 10000 and timer_plataforma >= 4000: screen.blit(roca, [meteorito9.x-10, meteorito9.y-10])
+		if meteorito1.x != 10000 and timer_plataforma >= 0 and timer_plataforma <= 5750: screen.blit(roca, [meteorito1.x-10, meteorito1.y-10])
+		if meteorito2.x != 10000 and timer_plataforma >= 0 and timer_plataforma <= 5750: screen.blit(roca, [meteorito2.x-10, meteorito2.y-10])
+		if meteorito3.x != 10000 and timer_plataforma >= 0 and timer_plataforma <= 5750: screen.blit(roca, [meteorito3.x-10, meteorito3.y-10])
+		if meteorito4.x != 10000 and timer_plataforma >= 2000 and timer_plataforma <= 7750: screen.blit(roca, [meteorito4.x-10, meteorito4.y-10])
+		if meteorito5.x != 10000 and timer_plataforma >= 2000 and timer_plataforma <= 7750: screen.blit(roca, [meteorito5.x-10, meteorito5.y-10])
+		if meteorito6.x != 10000 and timer_plataforma >= 2000 and timer_plataforma <= 7750: screen.blit(roca, [meteorito6.x-10, meteorito6.y-10])
+		if meteorito7.x != 10000 and timer_plataforma >= 4000 and timer_plataforma <= 9750: screen.blit(roca, [meteorito7.x-10, meteorito7.y-10])
+		if meteorito8.x != 10000 and timer_plataforma >= 4000 and timer_plataforma <= 9750: screen.blit(roca, [meteorito8.x-10, meteorito8.y-10])
+		if meteorito9.x != 10000 and timer_plataforma >= 4000 and timer_plataforma <= 9750: screen.blit(roca, [meteorito9.x-10, meteorito9.y-10])
 	elif personaje1 == "Jupiter": 
 		plataforma.Aumentar(enemigo)
 		screen.blit(jupiter, [plataforma.x-10, plataforma.y-10])
@@ -579,30 +673,51 @@ while True:
 	elif personaje1 == "Urano": 
 		if timer_plataforma >= 0 and timer_plataforma <= 6000:
 			plataforma.DispararCongelacion(enemigo, congelacion1)
+			if timer_plataforma >= 5750:
+				if timer_plataforma <= 5825:
+					screen.blit(explosion_hielo, [congelacion1.x-12.5, congelacion1.y-15])
+				elif timer_plataforma <= 5900:
+					screen.blit(explosion_hielo2, [congelacion1.x-12.5, congelacion1.y-15])
+				else:
+					screen.blit(explosion_hielo3, [congelacion1.x-12.5, congelacion1.y-15])
 			if timer_plataforma >= 6000 and congelacion1.x != 10000:
 				congelacion1.x = 10000
 		if timer_plataforma >= 2000 and timer_plataforma <= 8000:
 			plataforma.DispararCongelacion(enemigo, congelacion2)
+			if timer_plataforma >= 7750:
+				if timer_plataforma <= 7825:
+					screen.blit(explosion_hielo, [congelacion2.x-12.5, congelacion2.y-15])
+				elif timer_plataforma <= 7900:
+					screen.blit(explosion_hielo2, [congelacion2.x-12.5, congelacion2.y-15])
+				else:
+					screen.blit(explosion_hielo3, [congelacion2.x-12.5, congelacion2.y-15])
 			if timer_plataforma >= 8000 and congelacion2.x != 10000:
 				congelacion2.x = 10000
 		if timer_plataforma >= 4000 and timer_plataforma <= 10000:
 			plataforma.DispararCongelacion(enemigo, congelacion3)
+			if timer_plataforma >= 9750:
+				if timer_plataforma <= 9825:
+					screen.blit(explosion_hielo, [congelacion3.x-12.5, congelacion3.y-15])
+				elif timer_plataforma <= 9900:
+					screen.blit(explosion_hielo2, [congelacion3.x-12.5, congelacion3.y-15])
+				else:
+					screen.blit(explosion_hielo3, [congelacion3.x-12.5, congelacion3.y-15])
 			if timer_plataforma >= 10000 and congelacion3.x != 10000:
 				congelacion3.x = 10000
 		if timer_plataforma >= 10000:
 			timer_plataforma = 0
 		screen.blit(urano, [plataforma.x-10, plataforma.y-10])
-		if congelacion1.x != 10000 and timer_plataforma >= 0:
+		if congelacion1.x != 10000 and timer_plataforma >= 0 and timer_plataforma <= 5750:
 			if congelacion1.direccionx == -1:
 				screen.blit(hielo2, [congelacion1.x-17.5, congelacion1.y-15])
 			else:
 				screen.blit(hielo1, [congelacion1.x-12.5, congelacion1.y-15])
-		if congelacion2.x != 10000 and timer_plataforma >= 2000:
+		if congelacion2.x != 10000 and timer_plataforma >= 2000 and timer_plataforma <= 7750:
 			if congelacion2.direccionx == -1:
 				screen.blit(hielo2, [congelacion2.x-17.5, congelacion2.y-15])
 			else:
 				screen.blit(hielo1, [congelacion2.x-12.5, congelacion2.y-15])
-		if congelacion3.x != 10000 and timer_plataforma >= 4000:
+		if congelacion3.x != 10000 and timer_plataforma >= 4000 and timer_plataforma <= 9750:
 			if congelacion3.direccionx == -1:
 				screen.blit(hielo2, [congelacion3.x-17.5, congelacion3.y-15])
 			else:
@@ -613,6 +728,7 @@ while True:
 		screen.blit(diamante, [diamante1.x-35, diamante1.y-20])
 		screen.blit(diamante, [diamante2.x-35, diamante2.y-20])
 
+	#ENEMIGO
 	if personaje2 == "Mercurio": 
 		enemigo.Separarse(plataforma, secundaria)
 		screen.blit(secundaria_mercurio, [enemigo.x-10, enemigo.y-10])
@@ -620,52 +736,94 @@ while True:
 	elif personaje2 == "Venus": 
 		if timer_enemigo >= 0 and timer_enemigo <= 6000:
 			enemigo.PonerTrampa(plataforma, trampa1)	
+			if timer_enemigo >= 5750:
+				if timer_enemigo <= 5825:
+					screen.blit(explosion_trampa, [trampa1.x-15, trampa1.y-15])
+				elif timer_enemigo <= 5900:
+					screen.blit(explosion_trampa2, [trampa1.x-15, trampa1.y-15])
+				else:
+					screen.blit(explosion_trampa3, [trampa1.x-15, trampa1.y-15])
 			if timer_enemigo >= 6000 and trampa1.x != 10000:
 				trampa1.x = 10000
 		if timer_enemigo >= 2000 and timer_enemigo <= 8000:
-			enemigo.PonerTrampa(plataforma, trampa2)	
+			enemigo.PonerTrampa(plataforma, trampa2)
+			if timer_enemigo >= 7750:
+				if timer_enemigo <= 7825:
+					screen.blit(explosion_trampa, [trampa2.x-15, trampa2.y-15])
+				elif timer_enemigo <= 7900:
+					screen.blit(explosion_trampa2, [trampa2.x-15, trampa2.y-15])
+				else:
+					screen.blit(explosion_trampa3, [trampa2.x-15, trampa2.y-15])	
 			if timer_enemigo >= 8000 and trampa2.x != 10000:
 				trampa2.x = 10000
 		if timer_enemigo >= 4000 and timer_enemigo <= 10000:
-			enemigo.PonerTrampa(plataforma, trampa3)	
+			enemigo.PonerTrampa(plataforma, trampa3)
+			if timer_enemigo >= 9750:
+				if timer_enemigo <= 9825:
+					screen.blit(explosion_trampa, [trampa3.x-15, trampa3.y-15])
+				elif timer_enemigo <= 9900:
+					screen.blit(explosion_trampa2, [trampa3.x-15, trampa3.y-15])
+				else:
+					screen.blit(explosion_trampa3, [trampa3.x-15, trampa3.y-15])
 			if timer_enemigo >= 10000 and trampa3.x != 10000:
 				trampa3.x = 10000
 		if timer_enemigo >= 10000:
 			timer_enemigo = 0
 		screen.blit(venus, [enemigo.x-10, enemigo.y-10])
-		if trampa1.x != 10000 and timer_enemigo >= 0:
+		if trampa1.x != 10000 and timer_enemigo >= 0 and timer_enemigo <= 5750:
 			screen.blit(totem, [trampa1.x-25, trampa1.y-30])
-		if trampa2.x != 10000 and timer_enemigo >= 2000:
+		if trampa2.x != 10000 and timer_enemigo >= 2000 and timer_enemigo <= 7750:
 			screen.blit(totem, [trampa2.x-25, trampa2.y-30])
-		if trampa3.x != 10000 and timer_enemigo >= 4000:
+		if trampa3.x != 10000 and timer_enemigo >= 4000 and timer_enemigo <= 9750:
 			screen.blit(totem, [trampa3.x-25, trampa3.y-30])
 	elif personaje2 == "La Tierra": 
 		if timer_enemigo >= 0 and timer_enemigo <= 6000:
 			enemigo.DispararTeledirigido(plataforma, disparo1)
+			if timer_enemigo >= 5750:
+				if timer_enemigo <= 5825:
+					screen.blit(explosion_cohete, [disparo1.x-15, disparo1.y-15])
+				elif timer_enemigo <= 5900:
+					screen.blit(explosion_cohete2, [disparo1.x-15, disparo1.y-15])
+				else:
+					screen.blit(explosion_cohete3, [disparo1.x-15, disparo1.y-15])
 			if timer_enemigo >= 6000 and disparo1.x != 10000:
 				disparo1.x = 10000
 		if timer_enemigo >= 2000 and timer_enemigo <= 8000:
 			enemigo.DispararTeledirigido(plataforma, disparo2)
+			if timer_enemigo >= 7750:
+				if timer_enemigo <= 7825:
+					screen.blit(explosion_cohete, [disparo2.x-15, disparo2.y-15])
+				elif timer_enemigo <= 7900:
+					screen.blit(explosion_cohete2, [disparo2.x-15, disparo2.y-15])
+				else:
+					screen.blit(explosion_cohete3, [disparo2.x-15, disparo2.y-15])
 			if timer_enemigo >= 8000 and disparo2.x != 10000:
 				disparo2.x = 10000
 		if timer_enemigo >= 4000 and timer_enemigo <= 10000:
 			enemigo.DispararTeledirigido(plataforma, disparo3)
+			if timer_enemigo >= 9750:
+				if timer_enemigo <= 9825:
+					screen.blit(explosion_cohete, [disparo3.x-15, disparo3.y-15])
+				elif timer_enemigo <= 9900:
+					screen.blit(explosion_cohete2, [disparo3.x-15, disparo3.y-15])
+				else:
+					screen.blit(explosion_cohete3, [disparo3.x-15, disparo3.y-15])
 			if timer_enemigo >= 10000 and disparo3.x != 10000:
 				disparo3.x = 10000
 		if timer_enemigo >= 10000:
 			timer_enemigo = 0
 		screen.blit(latierra, [enemigo.x-10, enemigo.y-10])
-		if disparo1.x != 10000 and timer_enemigo >= 0:
+		if disparo1.x != 10000 and timer_enemigo >= 0 and timer_enemigo <= 5750:
 			if disparo1.direccionx == -1:
 				screen.blit(cohete2, [disparo1.x-15, disparo1.y-15])
 			else:
 				screen.blit(cohete1, [disparo1.x-15, disparo1.y-15])
-		if disparo2.x != 10000 and timer_enemigo >= 2000:
+		if disparo2.x != 10000 and timer_enemigo >= 2000 and timer_enemigo <= 7750:
 			if disparo2.direccionx == -1:
 				screen.blit(cohete2, [disparo2.x-15, disparo2.y-15])
 			else:
 				screen.blit(cohete1, [disparo2.x-15, disparo2.y-15])
-		if disparo3.x != 10000 and timer_enemigo >= 4000:
+		if disparo3.x != 10000 and timer_enemigo >= 4000 and timer_enemigo <= 9750:
 			if disparo3.direccionx == -1:
 				screen.blit(cohete2, [disparo3.x-15, disparo3.y-15])
 			else:
@@ -673,18 +831,30 @@ while True:
 	elif personaje2 == "Marte": 
 		if timer_enemigo >= 0 and timer_enemigo <= 6000:
 			enemigo.Disparar(plataforma, meteorito1, meteorito2, meteorito3)
+			if timer_enemigo >= 5750:
+				screen.blit(explosion_roca, [meteorito1.x-10, meteorito1.y-10])
+				screen.blit(explosion_roca, [meteorito2.x-10, meteorito2.y-10])
+				screen.blit(explosion_roca, [meteorito3.x-10, meteorito3.y-10])
 			if timer_enemigo >= 6000 and (meteorito1.x != 10000 or meteorito2.x != 10000 or meteorito3.x != 10000):
 				meteorito1.x = 10000
 				meteorito2.x = 10000
 				meteorito3.x = 10000
 		if timer_enemigo >= 2000 and timer_enemigo <= 8000:
 			enemigo.Disparar(plataforma, meteorito4, meteorito5, meteorito6)
+			if timer_enemigo >= 7750:
+				screen.blit(explosion_roca, [meteorito4.x-10, meteorito4.y-10])
+				screen.blit(explosion_roca, [meteorito5.x-10, meteorito5.y-10])
+				screen.blit(explosion_roca, [meteorito6.x-10, meteorito6.y-10])
 			if timer_enemigo >= 8000 and (meteorito4.x != 10000 or meteorito5.x != 10000 or meteorito6.x != 10000):
 				meteorito4.x = 10000
 				meteorito5.x = 10000
 				meteorito6.x = 10000
 		if timer_enemigo >= 4000 and timer_enemigo <= 10000:
 			enemigo.Disparar(plataforma, meteorito7, meteorito8, meteorito9)
+			if timer_enemigo >= 9750:
+				screen.blit(explosion_roca, [meteorito7.x-10, meteorito7.y-10])
+				screen.blit(explosion_roca, [meteorito8.x-10, meteorito8.y-10])
+				screen.blit(explosion_roca, [meteorito9.x-10, meteorito9.y-10])
 			if timer_enemigo >= 10000 and (meteorito7.x != 10000 or meteorito8.x != 10000 or meteorito9.x != 10000):
 				meteorito7.x = 10000
 				meteorito8.x = 10000
@@ -692,15 +862,15 @@ while True:
 		if timer_enemigo >= 10000:
 			timer_enemigo = 0
 		screen.blit(marte, [enemigo.x-10, enemigo.y-10])
-		if meteorito1.x != 10000 and timer_enemigo >= 0: screen.blit(roca, [meteorito1.x-10, meteorito1.y-10])
-		if meteorito2.x != 10000 and timer_enemigo >= 0: screen.blit(roca, [meteorito2.x-10, meteorito2.y-10])
-		if meteorito3.x != 10000 and timer_enemigo >= 0: screen.blit(roca, [meteorito3.x-10, meteorito3.y-10])
-		if meteorito4.x != 10000 and timer_enemigo >= 2000: screen.blit(roca, [meteorito4.x-10, meteorito4.y-10])
-		if meteorito5.x != 10000 and timer_enemigo >= 2000: screen.blit(roca, [meteorito5.x-10, meteorito5.y-10])
-		if meteorito6.x != 10000 and timer_enemigo >= 2000: screen.blit(roca, [meteorito6.x-10, meteorito6.y-10])
-		if meteorito7.x != 10000 and timer_enemigo >= 4000: screen.blit(roca, [meteorito7.x-10, meteorito7.y-10])
-		if meteorito8.x != 10000 and timer_enemigo >= 4000: screen.blit(roca, [meteorito8.x-10, meteorito8.y-10])
-		if meteorito9.x != 10000 and timer_enemigo >= 4000: screen.blit(roca, [meteorito9.x-10, meteorito9.y-10])
+		if meteorito1.x != 10000 and timer_enemigo >= 0 and timer_enemigo <= 5750: screen.blit(roca, [meteorito1.x-10, meteorito1.y-10])
+		if meteorito2.x != 10000 and timer_enemigo >= 0 and timer_enemigo <= 5750: screen.blit(roca, [meteorito2.x-10, meteorito2.y-10])
+		if meteorito3.x != 10000 and timer_enemigo >= 0 and timer_enemigo <= 5750: screen.blit(roca, [meteorito3.x-10, meteorito3.y-10])
+		if meteorito4.x != 10000 and timer_enemigo >= 2000 and timer_enemigo <= 7750: screen.blit(roca, [meteorito4.x-10, meteorito4.y-10])
+		if meteorito5.x != 10000 and timer_enemigo >= 2000 and timer_enemigo <= 7750: screen.blit(roca, [meteorito5.x-10, meteorito5.y-10])
+		if meteorito6.x != 10000 and timer_enemigo >= 2000 and timer_enemigo <= 7750: screen.blit(roca, [meteorito6.x-10, meteorito6.y-10])
+		if meteorito7.x != 10000 and timer_enemigo >= 4000 and timer_enemigo <= 9750: screen.blit(roca, [meteorito7.x-10, meteorito7.y-10])
+		if meteorito8.x != 10000 and timer_enemigo >= 4000 and timer_enemigo <= 9750: screen.blit(roca, [meteorito8.x-10, meteorito8.y-10])
+		if meteorito9.x != 10000 and timer_enemigo >= 4000 and timer_enemigo <= 9750: screen.blit(roca, [meteorito9.x-10, meteorito9.y-10])
 	elif personaje2 == "Jupiter": 
 		enemigo.Aumentar(plataforma)
 		screen.blit(jupiter, [enemigo.x-10, enemigo.y-10])
@@ -714,30 +884,51 @@ while True:
 	elif personaje2 == "Urano": 
 		if timer_enemigo >= 0 and timer_enemigo <= 6000:
 			enemigo.DispararCongelacion(plataforma, congelacion1)
+			if timer_enemigo >= 5750:
+				if timer_enemigo <= 5825:
+					screen.blit(explosion_hielo, [congelacion1.x-17.5, congelacion1.y-15])
+				elif timer_enemigo <= 5900:
+					screen.blit(explosion_hielo2, [congelacion1.x-17.5, congelacion1.y-15])
+				else:
+					screen.blit(explosion_hielo3, [congelacion1.x-17.5, congelacion1.y-15])
 			if timer_enemigo >= 6000 and congelacion1.x != 10000:
 				congelacion1.x = 10000
 		if timer_enemigo >= 2000 and timer_enemigo <= 8000:
 			enemigo.DispararCongelacion(plataforma, congelacion2)
+			if timer_enemigo >= 7750:
+				if timer_enemigo <= 7825:
+					screen.blit(explosion_hielo, [congelacion2.x-17.5, congelacion2.y-15])
+				elif timer_enemigo <= 7900:
+					screen.blit(explosion_hielo2, [congelacion2.x-17.5, congelacion2.y-15])
+				else:
+					screen.blit(explosion_hielo3, [congelacion2.x-17.5, congelacion2.y-15])
 			if timer_enemigo >= 8000 and congelacion2.x != 10000:
 				congelacion2.x = 10000
 		if timer_enemigo >= 4000 and timer_enemigo <= 10000:
 			enemigo.DispararCongelacion(plataforma, congelacion3)
+			if timer_enemigo >= 9750:
+				if timer_enemigo <= 9825:
+					screen.blit(explosion_hielo, [congelacion3.x-17.5, congelacion3.y-15])
+				elif timer_enemigo <= 9900:
+					screen.blit(explosion_hielo2, [congelacion3.x-17.5, congelacion3.y-15])
+				else:
+					screen.blit(explosion_hielo3, [congelacion3.x-17.5, congelacion3.y-15])
 			if timer_enemigo >= 10000 and congelacion3.x != 10000:
 				congelacion3.x = 10000
 		if timer_enemigo >= 10000:
 			timer_enemigo = 0
 		screen.blit(urano, [enemigo.x-10, enemigo.y-10])
-		if congelacion1.x != 10000 and timer_enemigo >= 0:
+		if congelacion1.x != 10000 and timer_enemigo >= 0 and timer_enemigo <= 5750:
 			if congelacion1.direccionx == -1:
 				screen.blit(hielo2, [congelacion1.x-17.5, congelacion1.y-15])
 			else:
 				screen.blit(hielo1, [congelacion1.x-12.5, congelacion1.y-15])
-		if congelacion2.x != 10000 and timer_enemigo >= 2000:
+		if congelacion2.x != 10000 and timer_enemigo >= 2000 and timer_enemigo <= 7750:
 			if congelacion2.direccionx == -1:
 				screen.blit(hielo2, [congelacion2.x-17.5, congelacion2.y-15])
 			else:
 				screen.blit(hielo1, [congelacion2.x-12.5, congelacion2.y-15])
-		if congelacion3.x != 10000 and timer_enemigo >= 4000:
+		if congelacion3.x != 10000 and timer_enemigo >= 4000 and timer_enemigo <= 9750:
 			if congelacion3.direccionx == -1:
 				screen.blit(hielo2, [congelacion3.x-17.5, congelacion3.y-15])
 			else:
