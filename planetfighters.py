@@ -243,18 +243,29 @@ enemigo = Bola(940,350,55,55, 1, 1, 0, (255,0,0), 100, 1)
 timer = 0
 timer_plataforma = 0
 timer_enemigo = 0
+timer_planeta1 = 0
+timer_planeta2 = 0
 inicial = True
 personaje1 = "Marte"
-personaje2 = "Urano"
+personaje2 = "La Tierra"
 mercurio = transform.scale(image.load("planetfighters_images/Mercurio.png"), (75, 75))
 secundaria_mercurio = transform.scale(image.load("planetfighters_images/Mercurio.png"), (50, 50))
 minimercurio = transform.scale(image.load("planetfighters_images/Mercurio.png"), (25, 25))
 venus = transform.scale(image.load("planetfighters_images/Venus.png"), (75, 75))
 minivenus = transform.scale(image.load("planetfighters_images/Venus.png"), (25, 25))
-latierra = transform.scale(image.load("planetfighters_images/LaTierra.png"), (75, 75))
-minilatierra = transform.scale(image.load("planetfighters_images/LaTierra.png"), (25, 25))
+latierra1 = transform.scale(image.load("planetfighters_images/LaTierra1.png"), (75, 75))
+latierra2 = transform.scale(image.load("planetfighters_images/LaTierra2.png"), (75, 75))
+latierra3 = transform.scale(image.load("planetfighters_images/LaTierra3.png"), (75, 75))
+latierra4 = transform.scale(image.load("planetfighters_images/LaTierra4.png"), (75, 75))
+latierra5 = transform.scale(image.load("planetfighters_images/LaTierra5.png"), (75, 75))
+minilatierra = transform.scale(image.load("planetfighters_images/LaTierra5.png"), (25, 25))
 marte = transform.scale(image.load("planetfighters_images/Marte.png"), (75, 75))
-minimarte = transform.scale(image.load("planetfighters_images/Marte.png"), (25, 25))
+marte1 = transform.scale(image.load("planetfighters_images/Marte1.png"), (75, 75))
+marte2 = transform.scale(image.load("planetfighters_images/Marte2.png"), (75, 75))
+marte3 = transform.scale(image.load("planetfighters_images/Marte3.png"), (75, 75))
+marte4 = transform.scale(image.load("planetfighters_images/Marte4.png"), (75, 75))
+marte5 = transform.scale(image.load("planetfighters_images/Marte5.png"), (75, 75))
+minimarte = transform.scale(image.load("planetfighters_images/Marte5.png"), (25, 25))
 jupiter = transform.scale(image.load("planetfighters_images/Jupiter.png"), (75, 75))
 minijupiter = transform.scale(image.load("planetfighters_images/Jupiter.png"), (25, 25))
 saturno = transform.scale(image.load("planetfighters_images/Saturno.png"), (125, 125))
@@ -321,6 +332,8 @@ while True:
 	timer += 1
 	timer_plataforma += 1
 	timer_enemigo += 1
+	timer_planeta1 += 1
+	timer_planeta2 += 1
 
 	if timer == 1 or timer >= 2000:
 		if timer == 1 or timer == 2000 or timer == 3000 or timer == 4000 or timer == 10000:
@@ -574,7 +587,18 @@ while True:
 				disparo3.x = 10000
 		if timer_plataforma >= 10000:
 			timer_plataforma = 0
-		screen.blit(latierra, [plataforma.x-10, plataforma.y-10])
+		if timer_planeta1 <= 150:
+			screen.blit(latierra1, [plataforma.x-10, plataforma.y-10])
+		elif timer_planeta1 <= 300:
+			screen.blit(latierra2, [plataforma.x-10, plataforma.y-10])
+		elif timer_planeta1 <= 450:
+			screen.blit(latierra3, [plataforma.x-10, plataforma.y-10])
+		elif timer_planeta1 <= 600:
+			screen.blit(latierra4, [plataforma.x-10, plataforma.y-10])
+		else:
+			screen.blit(latierra5, [plataforma.x-10, plataforma.y-10])
+			if timer_planeta1 >= 750:
+				timer_planeta1 = 0
 		if disparo1.x != 10000 and timer_plataforma >= 0 and timer_plataforma <= 5750:
 			if disparo1.direccionx == -1:
 				screen.blit(cohete2, [disparo1.x-15, disparo1.y-15])
@@ -650,7 +674,18 @@ while True:
 				meteorito9.x = 10000
 		if timer_plataforma >= 10000:
 			timer_plataforma = 0
-		screen.blit(marte, [plataforma.x-10, plataforma.y-10])
+		if timer_planeta1 <= 150:
+			screen.blit(marte1, [plataforma.x-10, plataforma.y-10])
+		elif timer_planeta1 <= 300:
+			screen.blit(marte2, [plataforma.x-10, plataforma.y-10])
+		elif timer_planeta1 <= 450:
+			screen.blit(marte3, [plataforma.x-10, plataforma.y-10])
+		elif timer_planeta1 <= 600:
+			screen.blit(marte4, [plataforma.x-10, plataforma.y-10])
+		else:
+			screen.blit(marte5, [plataforma.x-10, plataforma.y-10])
+			if timer_planeta1 >= 750:
+				timer_planeta1 = 0
 		if meteorito1.x != 10000 and timer_plataforma >= 0 and timer_plataforma <= 5750: screen.blit(roca, [meteorito1.x-10, meteorito1.y-10])
 		if meteorito2.x != 10000 and timer_plataforma >= 0 and timer_plataforma <= 5750: screen.blit(roca, [meteorito2.x-10, meteorito2.y-10])
 		if meteorito3.x != 10000 and timer_plataforma >= 0 and timer_plataforma <= 5750: screen.blit(roca, [meteorito3.x-10, meteorito3.y-10])
@@ -812,7 +847,18 @@ while True:
 				disparo3.x = 10000
 		if timer_enemigo >= 10000:
 			timer_enemigo = 0
-		screen.blit(latierra, [enemigo.x-10, enemigo.y-10])
+		if timer_planeta2 <= 150:
+			screen.blit(latierra1, [enemigo.x-10, enemigo.y-10])
+		elif timer_planeta2 <= 300:
+			screen.blit(latierra2, [enemigo.x-10, enemigo.y-10])
+		elif timer_planeta2 <= 450:
+			screen.blit(latierra3, [enemigo.x-10, enemigo.y-10])
+		elif timer_planeta2 <= 600:
+			screen.blit(latierra4, [enemigo.x-10, enemigo.y-10])
+		else:
+			screen.blit(latierra5, [enemigo.x-10, enemigo.y-10])
+			if timer_planeta2 >= 750:
+				timer_planeta2 = 0
 		if disparo1.x != 10000 and timer_enemigo >= 0 and timer_enemigo <= 5750:
 			if disparo1.direccionx == -1:
 				screen.blit(cohete2, [disparo1.x-15, disparo1.y-15])
@@ -832,9 +878,18 @@ while True:
 		if timer_enemigo >= 0 and timer_enemigo <= 6000:
 			enemigo.Disparar(plataforma, meteorito1, meteorito2, meteorito3)
 			if timer_enemigo >= 5750:
-				screen.blit(explosion_roca, [meteorito1.x-10, meteorito1.y-10])
-				screen.blit(explosion_roca, [meteorito2.x-10, meteorito2.y-10])
-				screen.blit(explosion_roca, [meteorito3.x-10, meteorito3.y-10])
+				if timer_enemigo <= 5825:
+					screen.blit(explosion_roca, [meteorito1.x-10, meteorito1.y-10])
+					screen.blit(explosion_roca, [meteorito2.x-10, meteorito2.y-10])
+					screen.blit(explosion_roca, [meteorito3.x-10, meteorito3.y-10])
+				elif timer_enemigo <= 5900:
+					screen.blit(explosion_roca2, [meteorito1.x-10, meteorito1.y-10])
+					screen.blit(explosion_roca2, [meteorito2.x-10, meteorito2.y-10])
+					screen.blit(explosion_roca2, [meteorito3.x-10, meteorito3.y-10])
+				else:
+					screen.blit(explosion_roca3, [meteorito1.x-10, meteorito1.y-10])
+					screen.blit(explosion_roca3, [meteorito2.x-10, meteorito2.y-10])
+					screen.blit(explosion_roca3, [meteorito3.x-10, meteorito3.y-10])
 			if timer_enemigo >= 6000 and (meteorito1.x != 10000 or meteorito2.x != 10000 or meteorito3.x != 10000):
 				meteorito1.x = 10000
 				meteorito2.x = 10000
@@ -842,9 +897,18 @@ while True:
 		if timer_enemigo >= 2000 and timer_enemigo <= 8000:
 			enemigo.Disparar(plataforma, meteorito4, meteorito5, meteorito6)
 			if timer_enemigo >= 7750:
-				screen.blit(explosion_roca, [meteorito4.x-10, meteorito4.y-10])
-				screen.blit(explosion_roca, [meteorito5.x-10, meteorito5.y-10])
-				screen.blit(explosion_roca, [meteorito6.x-10, meteorito6.y-10])
+				if timer_enemigo <= 7825:
+					screen.blit(explosion_roca, [meteorito4.x-10, meteorito4.y-10])
+					screen.blit(explosion_roca, [meteorito5.x-10, meteorito5.y-10])
+					screen.blit(explosion_roca, [meteorito6.x-10, meteorito6.y-10])
+				elif timer_enemigo <= 7900:
+					screen.blit(explosion_roca2, [meteorito4.x-10, meteorito4.y-10])
+					screen.blit(explosion_roca2, [meteorito5.x-10, meteorito5.y-10])
+					screen.blit(explosion_roca2, [meteorito6.x-10, meteorito6.y-10])
+				else:
+					screen.blit(explosion_roca3, [meteorito4.x-10, meteorito4.y-10])
+					screen.blit(explosion_roca3, [meteorito5.x-10, meteorito5.y-10])
+					screen.blit(explosion_roca3, [meteorito6.x-10, meteorito6.y-10])
 			if timer_enemigo >= 8000 and (meteorito4.x != 10000 or meteorito5.x != 10000 or meteorito6.x != 10000):
 				meteorito4.x = 10000
 				meteorito5.x = 10000
@@ -852,16 +916,36 @@ while True:
 		if timer_enemigo >= 4000 and timer_enemigo <= 10000:
 			enemigo.Disparar(plataforma, meteorito7, meteorito8, meteorito9)
 			if timer_enemigo >= 9750:
-				screen.blit(explosion_roca, [meteorito7.x-10, meteorito7.y-10])
-				screen.blit(explosion_roca, [meteorito8.x-10, meteorito8.y-10])
-				screen.blit(explosion_roca, [meteorito9.x-10, meteorito9.y-10])
+				if timer_enemigo <= 9825:
+					screen.blit(explosion_roca, [meteorito7.x-10, meteorito7.y-10])
+					screen.blit(explosion_roca, [meteorito8.x-10, meteorito8.y-10])
+					screen.blit(explosion_roca, [meteorito9.x-10, meteorito9.y-10])
+				elif timer_enemigo <= 9900:
+					screen.blit(explosion_roca2, [meteorito7.x-10, meteorito7.y-10])
+					screen.blit(explosion_roca2, [meteorito8.x-10, meteorito8.y-10])
+					screen.blit(explosion_roca2, [meteorito9.x-10, meteorito9.y-10])
+				else:
+					screen.blit(explosion_roca3, [meteorito7.x-10, meteorito7.y-10])
+					screen.blit(explosion_roca3, [meteorito8.x-10, meteorito8.y-10])
+					screen.blit(explosion_roca3, [meteorito9.x-10, meteorito9.y-10])
 			if timer_enemigo >= 10000 and (meteorito7.x != 10000 or meteorito8.x != 10000 or meteorito9.x != 10000):
 				meteorito7.x = 10000
 				meteorito8.x = 10000
 				meteorito9.x = 10000
 		if timer_enemigo >= 10000:
 			timer_enemigo = 0
-		screen.blit(marte, [enemigo.x-10, enemigo.y-10])
+		if timer_planeta2 <= 150:
+			screen.blit(marte1, [enemigo.x-10, enemigo.y-10])
+		elif timer_planeta2 <= 300:
+			screen.blit(marte2, [enemigo.x-10, enemigo.y-10])
+		elif timer_planeta2 <= 450:
+			screen.blit(marte3, [enemigo.x-10, enemigo.y-10])
+		elif timer_planeta2 <= 600:
+			screen.blit(marte4, [enemigo.x-10, enemigo.y-10])
+		else:
+			screen.blit(marte5, [enemigo.x-10, enemigo.y-10])
+			if timer_planeta2 >= 750:
+				timer_planeta2 = 0
 		if meteorito1.x != 10000 and timer_enemigo >= 0 and timer_enemigo <= 5750: screen.blit(roca, [meteorito1.x-10, meteorito1.y-10])
 		if meteorito2.x != 10000 and timer_enemigo >= 0 and timer_enemigo <= 5750: screen.blit(roca, [meteorito2.x-10, meteorito2.y-10])
 		if meteorito3.x != 10000 and timer_enemigo >= 0 and timer_enemigo <= 5750: screen.blit(roca, [meteorito3.x-10, meteorito3.y-10])
