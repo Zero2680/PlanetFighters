@@ -183,6 +183,7 @@ class Bola(Objeto):
 
 	#JUPITER
 	def Aumentar(self, enemigo):
+		global colision
 		if self.x <= 15:
 			self.ancho += 2
 			self.largo += 2
@@ -195,7 +196,7 @@ class Bola(Objeto):
 		elif self.y >= 700:
 			self.ancho += 2
 			self.largo += 2
-		if self.check_colisiones(enemigo):
+		if self.check_colisiones(enemigo) and colision == False:
 			if self.ancho >= 65 and self.ancho < 80:
 				enemigo.vidas -= 2.5
 			elif self.ancho >= 80 and self.ancho < 100:
@@ -209,7 +210,8 @@ class Bola(Objeto):
 		diamante2.Movimiento_Diamante(enemigo)
 
 def Chocar(plataforma, enemigo):
-	if plataforma.check_colisiones(enemigo):
+	global colision
+	if plataforma.check_colisiones(enemigo) == True and colision == False:
 		plataforma.vidas -= 5
 		enemigo.vidas -= 5
 		if plataforma.direccionx == 1:
@@ -220,9 +222,9 @@ def Chocar(plataforma, enemigo):
 			enemigo.direccionx = -1
 		else:
 			enemigo.direccionx = 1
-		#if ((plataforma.x + plataforma.ancho) > enemigo.x and (plataforma.x + plataforma.ancho) < (enemigo.x + enemigo.ancho)) or ((enemigo.x + enemigo.ancho) > plataforma.x and (enemigo.x + enemigo.ancho) < (plataforma.x + plataforma.ancho)):
-			#plataforma.direcciony = -plataforma.direcciony
-			#enemigo.direcciony = -enemigo.direcciony
+		colision = True
+	if plataforma.check_colisiones(enemigo) is not True and colision == True:
+		colision = False
 
 
 def barra_hp_izquierda(screen, x, y, hp, color):
@@ -246,41 +248,64 @@ timer_enemigo = 0
 timer_planeta1 = 0
 timer_planeta2 = 0
 inicial = True
-personaje1 = "Marte"
-personaje2 = "La Tierra"
-mercurio = transform.scale(image.load("planetfighters_images/Mercurio.png"), (75, 75))
-secundaria_mercurio = transform.scale(image.load("planetfighters_images/Mercurio.png"), (50, 50))
-minimercurio = transform.scale(image.load("planetfighters_images/Mercurio.png"), (25, 25))
-venus = transform.scale(image.load("planetfighters_images/Venus.png"), (75, 75))
-minivenus = transform.scale(image.load("planetfighters_images/Venus.png"), (25, 25))
+personaje1 = "Jupiter"
+personaje2 = "Venus"
+mercurio1 = transform.scale(image.load("planetfighters_images/Mercurio1.png"), (50, 50))
+mercurio2 = transform.scale(image.load("planetfighters_images/Mercurio2.png"), (50, 50))
+mercurio3 = transform.scale(image.load("planetfighters_images/Mercurio3.png"), (50, 50))
+mercurio4 = transform.scale(image.load("planetfighters_images/Mercurio4.png"), (50, 50))
+mercurio5 = transform.scale(image.load("planetfighters_images/Mercurio5.png"), (50, 50))
+secundaria_mercurio = transform.scale(image.load("planetfighters_images/Mercurio1.png"), (50, 50))
+minimercurio = transform.scale(image.load("planetfighters_images/Mercurio1.png"), (25, 25))
+venus1 = transform.scale(image.load("planetfighters_images/Venus1.png"), (75, 75))
+venus2 = transform.scale(image.load("planetfighters_images/Venus2.png"), (75, 75))
+venus3 = transform.scale(image.load("planetfighters_images/Venus3.png"), (75, 75))
+venus4 = transform.scale(image.load("planetfighters_images/Venus4.png"), (75, 75))
+venus5 = transform.scale(image.load("planetfighters_images/Venus5.png"), (75, 75))
+minivenus = transform.scale(image.load("planetfighters_images/Venus1.png"), (25, 25))
 latierra1 = transform.scale(image.load("planetfighters_images/LaTierra1.png"), (75, 75))
 latierra2 = transform.scale(image.load("planetfighters_images/LaTierra2.png"), (75, 75))
 latierra3 = transform.scale(image.load("planetfighters_images/LaTierra3.png"), (75, 75))
 latierra4 = transform.scale(image.load("planetfighters_images/LaTierra4.png"), (75, 75))
 latierra5 = transform.scale(image.load("planetfighters_images/LaTierra5.png"), (75, 75))
 minilatierra = transform.scale(image.load("planetfighters_images/LaTierra5.png"), (25, 25))
-marte = transform.scale(image.load("planetfighters_images/Marte.png"), (75, 75))
 marte1 = transform.scale(image.load("planetfighters_images/Marte1.png"), (75, 75))
 marte2 = transform.scale(image.load("planetfighters_images/Marte2.png"), (75, 75))
 marte3 = transform.scale(image.load("planetfighters_images/Marte3.png"), (75, 75))
 marte4 = transform.scale(image.load("planetfighters_images/Marte4.png"), (75, 75))
 marte5 = transform.scale(image.load("planetfighters_images/Marte5.png"), (75, 75))
 minimarte = transform.scale(image.load("planetfighters_images/Marte5.png"), (25, 25))
-jupiter = transform.scale(image.load("planetfighters_images/Jupiter.png"), (75, 75))
-minijupiter = transform.scale(image.load("planetfighters_images/Jupiter.png"), (25, 25))
-saturno = transform.scale(image.load("planetfighters_images/Saturno.png"), (125, 125))
-minisaturno = transform.scale(image.load("planetfighters_images/Saturno.png"), (62, 62))
-urano = transform.scale(image.load("planetfighters_images/Urano.png"), (75, 75))
-miniurano = transform.scale(image.load("planetfighters_images/Urano.png"), (25, 25))
-neptuno = transform.scale(image.load("planetfighters_images/Neptuno.png"), (75, 75))
-minineptuno = transform.scale(image.load("planetfighters_images/Neptuno.png"), (25, 25))
+jupiter1 = transform.scale(image.load("planetfighters_images/Jupiter1.png"), (75, 75))
+jupiter2 = transform.scale(image.load("planetfighters_images/Jupiter2.png"), (75, 75))
+jupiter3 = transform.scale(image.load("planetfighters_images/Jupiter3.png"), (75, 75))
+jupiter4 = transform.scale(image.load("planetfighters_images/Jupiter4.png"), (75, 75))
+jupiter5 = transform.scale(image.load("planetfighters_images/Jupiter5.png"), (75, 75))
+minijupiter = transform.scale(image.load("planetfighters_images/Jupiter3.png"), (25, 25))
+saturno1 = transform.scale(image.load("planetfighters_images/Saturno1.png"), (125, 125))
+saturno2 = transform.scale(image.load("planetfighters_images/Saturno2.png"), (125, 125))
+saturno3 = transform.scale(image.load("planetfighters_images/Saturno3.png"), (125, 125))
+saturno4 = transform.scale(image.load("planetfighters_images/Saturno4.png"), (125, 125))
+saturno5 = transform.scale(image.load("planetfighters_images/Saturno5.png"), (125, 125))
+minisaturno = transform.scale(image.load("planetfighters_images/Saturno1.png"), (62, 62))
+urano1 = transform.scale(image.load("planetfighters_images/Urano1.png"), (75, 75))
+urano2 = transform.scale(image.load("planetfighters_images/Urano2.png"), (75, 75))
+urano3 = transform.scale(image.load("planetfighters_images/Urano3.png"), (75, 75))
+urano4 = transform.scale(image.load("planetfighters_images/Urano4.png"), (75, 75))
+urano5 = transform.scale(image.load("planetfighters_images/Urano5.png"), (75, 75))
+miniurano = transform.scale(image.load("planetfighters_images/Urano3.png"), (25, 25))
+neptuno1 = transform.scale(image.load("planetfighters_images/Neptuno1.png"), (75, 75))
+neptuno2 = transform.scale(image.load("planetfighters_images/Neptuno2.png"), (75, 75))
+neptuno3 = transform.scale(image.load("planetfighters_images/Neptuno3.png"), (75, 75))
+neptuno4 = transform.scale(image.load("planetfighters_images/Neptuno4.png"), (75, 75))
+neptuno5 = transform.scale(image.load("planetfighters_images/Neptuno5.png"), (75, 75))
+minineptuno = transform.scale(image.load("planetfighters_images/Neptuno1.png"), (25, 25))
 space = transform.scale(image.load("planetfighters_images/Space.png").convert(), (1280, 720))
 cohete1 = transform.scale(image.load("planetfighters_images/Cohete1.png"), (50, 50))
 cohete2 = transform.scale(image.load("planetfighters_images/Cohete2.png"), (50, 50))
 hielo1 = transform.scale(image.load("planetfighters_images/Hielo1.png"), (50, 50))
 hielo2 = transform.scale(image.load("planetfighters_images/Hielo2.png"), (50, 50))
 roca = transform.scale(image.load("planetfighters_images/Roca.png"), (30, 30))
-saturno2 = transform.scale(image.load("planetfighters_images/Saturno2.png"), (125, 125))
+saturnorev = transform.scale(image.load("planetfighters_images/SaturnoRev.png"), (125, 125))
 totem = transform.scale(image.load("planetfighters_images/Totem.png"), (75, 75))
 diamante = transform.scale(image.load("planetfighters_images/Diamante.png"), (75, 75))
 barra = transform.scale(image.load("planetfighters_images/Barra.png"), (175, 20))
@@ -306,8 +331,15 @@ miniplataforma = "Nulo"
 minienemigo = "Nulo"
 plataforma_color = (0,0,255)
 enemigo_color = (255,0,0)
+z = -1
 
 while True:
+	global colision
+
+	if z == -1:
+		colision = False
+		z = 0
+
 	screen.blit(space, [0, 0]) 
 	
 	plataforma.Movimiento(enemigo)
@@ -463,7 +495,7 @@ while True:
 			if personaje1 == "Mercurio" or personaje2 == "Mercurio":
 				if personaje1 == "Mercurio" and secundaria_x == 10001:
 					miniplataforma = minimercurio
-					plataforma_color = (138, 129, 120)
+					plataforma_color = (230, 221, 209)
 					secundaria_x = plataforma.x
 					secundaria_y = plataforma.y
 					secundaria_ancho = plataforma.ancho/2
@@ -473,7 +505,7 @@ while True:
 					secundaria_color = plataforma.color
 				elif personaje2 == "Mercurio" and secundaria_x == 10001:
 					minienemigo = minimercurio
-					enemigo_color = (138, 129, 120)
+					enemigo_color = (230, 221, 209)
 					secundaria_x = enemigo.x
 					secundaria_y = enemigo.y
 					secundaria_ancho = enemigo.ancho/2
@@ -481,7 +513,8 @@ while True:
 					secundaria_direccionx = -enemigo.direccionx
 					secundaria_direcciony = -enemigo.direcciony
 					secundaria_color = enemigo.color
-				secundaria = Bola(secundaria_x, secundaria_y, secundaria_ancho, secundaria_largo, secundaria_direccionx, secundaria_direcciony, 0, secundaria_color, enemigo.vidas/2, enemigo.team)
+				if inicial == True:
+					secundaria = Bola(secundaria_x, secundaria_y, secundaria_ancho, secundaria_largo, secundaria_direccionx, secundaria_direcciony, 0, secundaria_color, enemigo.vidas/2, enemigo.team)
 			if (personaje1 == "Neptuno" or personaje2 == "Neptuno") and inicial == True:
 				if personaje1 == "Neptuno" and miniplataforma == "Nulo":
 					miniplataforma = minineptuno
@@ -506,8 +539,23 @@ while True:
 	#PLATAFORMA
 	if personaje1 == "Mercurio": 
 		plataforma.Separarse(enemigo, secundaria)
-		screen.blit(secundaria_mercurio, [plataforma.x-10, plataforma.y-10])
-		screen.blit(secundaria_mercurio, [secundaria.x-10, secundaria.y-10])
+		if timer_planeta1 <= 150:
+			screen.blit(mercurio1, [plataforma.x-10, plataforma.y-10])
+			screen.blit(mercurio1, [secundaria.x-10, secundaria.y-10])
+		elif timer_planeta1 <= 300:
+			screen.blit(mercurio2, [plataforma.x-10, plataforma.y-10])
+			screen.blit(mercurio2, [secundaria.x-10, secundaria.y-10])
+		elif timer_planeta1 <= 450:
+			screen.blit(mercurio3, [plataforma.x-10, plataforma.y-10])
+			screen.blit(mercurio3, [secundaria.x-10, secundaria.y-10])
+		elif timer_planeta1 <= 600:
+			screen.blit(mercurio4, [plataforma.x-10, plataforma.y-10])
+			screen.blit(mercurio4, [secundaria.x-10, secundaria.y-10])
+		else:
+			screen.blit(mercurio5, [plataforma.x-10, plataforma.y-10])
+			screen.blit(mercurio5, [secundaria.x-10, secundaria.y-10])
+			if timer_planeta1 >= 750:
+				timer_planeta1 = 0
 	elif personaje1 == "Venus": 
 		if timer_plataforma >= 0 and timer_plataforma <= 6000:
 			plataforma.PonerTrampa(enemigo, trampa1)	
@@ -544,7 +592,18 @@ while True:
 				trampa3.x = 10000
 		if timer_plataforma >= 10000:
 			timer_plataforma = 0
-		screen.blit(venus, [plataforma.x-10, plataforma.y-10])
+		if timer_planeta1 <= 150:
+			screen.blit(venus1, [plataforma.x-10, plataforma.y-10])
+		elif timer_planeta1 <= 300:
+			screen.blit(venus2, [plataforma.x-10, plataforma.y-10])
+		elif timer_planeta1 <= 450:
+			screen.blit(venus3, [plataforma.x-10, plataforma.y-10])
+		elif timer_planeta1 <= 600:
+			screen.blit(venus4, [plataforma.x-10, plataforma.y-10])
+		else:
+			screen.blit(venus5, [plataforma.x-10, plataforma.y-10])
+			if timer_planeta1 >= 750:
+				timer_planeta1 = 0
 		if trampa1.x != 10000 and timer_plataforma >= 0 and timer_plataforma <= 5750:
 			screen.blit(totem, [trampa1.x-25, trampa1.y-30])
 		if trampa2.x != 10000 and timer_plataforma >= 2000 and timer_plataforma <= 7750:
@@ -697,14 +756,36 @@ while True:
 		if meteorito9.x != 10000 and timer_plataforma >= 4000 and timer_plataforma <= 9750: screen.blit(roca, [meteorito9.x-10, meteorito9.y-10])
 	elif personaje1 == "Jupiter": 
 		plataforma.Aumentar(enemigo)
-		screen.blit(jupiter, [plataforma.x-10, plataforma.y-10])
+		if timer_planeta1 <= 150:
+			screen.blit(jupiter1, [plataforma.x-10, plataforma.y-10])
+		elif timer_planeta1 <= 300:
+			screen.blit(jupiter2, [plataforma.x-10, plataforma.y-10])
+		elif timer_planeta1 <= 450:
+			screen.blit(jupiter3, [plataforma.x-10, plataforma.y-10])
+		elif timer_planeta1 <= 600:
+			screen.blit(jupiter4, [plataforma.x-10, plataforma.y-10])
+		else:
+			screen.blit(jupiter5, [plataforma.x-10, plataforma.y-10])
+			if timer_planeta1 >= 750:
+				timer_planeta1 = 0
 	elif personaje1 == "Saturno": 
 		if timer_plataforma >= 3000:
 			plataforma.GolpearEnArea(enemigo, area)
-			screen.blit(saturno2, [plataforma.x-35, plataforma.y-35])
+			screen.blit(saturnorev, [plataforma.x-35, plataforma.y-35])
 			if timer_plataforma >= 6000:
 				timer_plataforma = 0
-		screen.blit(saturno, [plataforma.x-35, plataforma.y-35])
+		if timer_planeta1 <= 150:
+			screen.blit(saturno1, [plataforma.x-35, plataforma.y-35])
+		elif timer_planeta1 <= 300:
+			screen.blit(saturno2, [plataforma.x-35, plataforma.y-35])
+		elif timer_planeta1 <= 450:
+			screen.blit(saturno3, [plataforma.x-35, plataforma.y-35])
+		elif timer_planeta1 <= 600:
+			screen.blit(saturno4, [plataforma.x-35, plataforma.y-35])
+		else:
+			screen.blit(saturno5, [plataforma.x-35, plataforma.y-35])
+			if timer_planeta1 >= 750:
+				timer_planeta1 = 0
 	elif personaje1 == "Urano": 
 		if timer_plataforma >= 0 and timer_plataforma <= 6000:
 			plataforma.DispararCongelacion(enemigo, congelacion1)
@@ -741,7 +822,18 @@ while True:
 				congelacion3.x = 10000
 		if timer_plataforma >= 10000:
 			timer_plataforma = 0
-		screen.blit(urano, [plataforma.x-10, plataforma.y-10])
+		if timer_planeta1 <= 150:
+			screen.blit(urano1, [plataforma.x-10, plataforma.y-10])
+		elif timer_planeta1 <= 300:
+			screen.blit(urano2, [plataforma.x-10, plataforma.y-10])
+		elif timer_planeta1 <= 450:
+			screen.blit(urano3, [plataforma.x-10, plataforma.y-10])
+		elif timer_planeta1 <= 600:
+			screen.blit(urano4, [plataforma.x-10, plataforma.y-10])
+		else:
+			screen.blit(urano5, [plataforma.x-10, plataforma.y-10])
+			if timer_planeta1 >= 750:
+				timer_planeta1 = 0
 		if congelacion1.x != 10000 and timer_plataforma >= 0 and timer_plataforma <= 5750:
 			if congelacion1.direccionx == -1:
 				screen.blit(hielo2, [congelacion1.x-17.5, congelacion1.y-15])
@@ -759,15 +851,41 @@ while True:
 				screen.blit(hielo1, [congelacion3.x-12.5, congelacion3.y-15])
 	elif personaje1 == "Neptuno": 
 		plataforma.LluviaDeDiamantes(enemigo, diamante1, diamante2)
-		screen.blit(neptuno, [plataforma.x-10, plataforma.y-10])
+		if timer_planeta1 <= 150:
+			screen.blit(neptuno1, [plataforma.x-10, plataforma.y-10])
+		elif timer_planeta1 <= 300:
+			screen.blit(neptuno2, [plataforma.x-10, plataforma.y-10])
+		elif timer_planeta1 <= 450:
+			screen.blit(neptuno3, [plataforma.x-10, plataforma.y-10])
+		elif timer_planeta1 <= 600:
+			screen.blit(neptuno4, [plataforma.x-10, plataforma.y-10])
+		else:
+			screen.blit(neptuno5, [plataforma.x-10, plataforma.y-10])
+			if timer_planeta1 >= 750:
+				timer_planeta1 = 0
 		screen.blit(diamante, [diamante1.x-35, diamante1.y-20])
 		screen.blit(diamante, [diamante2.x-35, diamante2.y-20])
 
 	#ENEMIGO
 	if personaje2 == "Mercurio": 
-		enemigo.Separarse(plataforma, secundaria)
-		screen.blit(secundaria_mercurio, [enemigo.x-10, enemigo.y-10])
-		screen.blit(secundaria_mercurio, [secundaria.x-10, secundaria.y-10])
+		enemigo.Separarse(plataforma, secundaria)		
+		if timer_planeta2 <= 150:
+			screen.blit(mercurio1, [enemigo.x-10, enemigo.y-10])
+			screen.blit(mercurio1, [secundaria.x-10, secundaria.y-10])
+		elif timer_planeta2 <= 300:
+			screen.blit(mercurio2, [enemigo.x-10, enemigo.y-10])
+			screen.blit(mercurio2, [secundaria.x-10, secundaria.y-10])
+		elif timer_planeta2 <= 450:
+			screen.blit(mercurio3, [enemigo.x-10, enemigo.y-10])
+			screen.blit(mercurio3, [secundaria.x-10, secundaria.y-10])
+		elif timer_planeta2 <= 600:
+			screen.blit(mercurio4, [enemigo.x-10, enemigo.y-10])
+			screen.blit(mercurio4, [secundaria.x-10, secundaria.y-10])
+		else:
+			screen.blit(mercurio5, [enemigo.x-10, enemigo.y-10])
+			screen.blit(mercurio5, [secundaria.x-10, secundaria.y-10])
+			if timer_planeta2 >= 750:
+				timer_planeta2 = 0
 	elif personaje2 == "Venus": 
 		if timer_enemigo >= 0 and timer_enemigo <= 6000:
 			enemigo.PonerTrampa(plataforma, trampa1)	
@@ -804,7 +922,18 @@ while True:
 				trampa3.x = 10000
 		if timer_enemigo >= 10000:
 			timer_enemigo = 0
-		screen.blit(venus, [enemigo.x-10, enemigo.y-10])
+		if timer_planeta2 <= 150:
+			screen.blit(venus1, [enemigo.x-10, enemigo.y-10])
+		elif timer_planeta2 <= 300:
+			screen.blit(venus2, [enemigo.x-10, enemigo.y-10])
+		elif timer_planeta2 <= 450:
+			screen.blit(venus3, [enemigo.x-10, enemigo.y-10])
+		elif timer_planeta2 <= 600:
+			screen.blit(venus4, [enemigo.x-10, enemigo.y-10])
+		else:
+			screen.blit(venus5, [enemigo.x-10, enemigo.y-10])
+			if timer_planeta2 >= 750:
+				timer_planeta2 = 0
 		if trampa1.x != 10000 and timer_enemigo >= 0 and timer_enemigo <= 5750:
 			screen.blit(totem, [trampa1.x-25, trampa1.y-30])
 		if trampa2.x != 10000 and timer_enemigo >= 2000 and timer_enemigo <= 7750:
@@ -957,14 +1086,36 @@ while True:
 		if meteorito9.x != 10000 and timer_enemigo >= 4000 and timer_enemigo <= 9750: screen.blit(roca, [meteorito9.x-10, meteorito9.y-10])
 	elif personaje2 == "Jupiter": 
 		enemigo.Aumentar(plataforma)
-		screen.blit(jupiter, [enemigo.x-10, enemigo.y-10])
+		if timer_planeta2 <= 150:
+			screen.blit(jupiter1, [enemigo.x-10, enemigo.y-10])
+		elif timer_planeta2 <= 300:
+			screen.blit(jupiter2, [enemigo.x-10, enemigo.y-10])
+		elif timer_planeta2 <= 450:
+			screen.blit(jupiter3, [enemigo.x-10, enemigo.y-10])
+		elif timer_planeta2 <= 600:
+			screen.blit(jupiter4, [enemigo.x-10, enemigo.y-10])
+		else:
+			screen.blit(jupiter5, [enemigo.x-10, enemigo.y-10])
+			if timer_planeta2 >= 750:
+				timer_planeta2 = 0
 	elif personaje2 == "Saturno": 
 		if timer_enemigo >= 3000:
 			enemigo.GolpearEnArea(plataforma, area)
-			screen.blit(saturno2, [enemigo.x-35, enemigo.y-35])
+			screen.blit(saturnorev, [enemigo.x-35, enemigo.y-35])
 			if timer_enemigo >= 6000:
 				timer_enemigo = 0
-		screen.blit(saturno, [enemigo.x-35, enemigo.y-35])
+		if timer_planeta2 <= 150:
+			screen.blit(saturno1, [enemigo.x-35, enemigo.y-35])
+		elif timer_planeta2 <= 300:
+			screen.blit(saturno2, [enemigo.x-35, enemigo.y-35])
+		elif timer_planeta2 <= 450:
+			screen.blit(saturno3, [enemigo.x-35, enemigo.y-35])
+		elif timer_planeta2 <= 600:
+			screen.blit(saturno4, [enemigo.x-35, enemigo.y-35])
+		else:
+			screen.blit(saturno5, [enemigo.x-35, enemigo.y-35])
+			if timer_planeta2 >= 750:
+				timer_planeta2 = 0
 	elif personaje2 == "Urano": 
 		if timer_enemigo >= 0 and timer_enemigo <= 6000:
 			enemigo.DispararCongelacion(plataforma, congelacion1)
@@ -1001,7 +1152,18 @@ while True:
 				congelacion3.x = 10000
 		if timer_enemigo >= 10000:
 			timer_enemigo = 0
-		screen.blit(urano, [enemigo.x-10, enemigo.y-10])
+		if timer_planeta2 <= 150:
+			screen.blit(urano1, [enemigo.x-10, enemigo.y-10])
+		elif timer_planeta2 <= 300:
+			screen.blit(urano2, [enemigo.x-10, enemigo.y-10])
+		elif timer_planeta2 <= 450:
+			screen.blit(urano3, [enemigo.x-10, enemigo.y-10])
+		elif timer_planeta2 <= 600:
+			screen.blit(urano4, [enemigo.x-10, enemigo.y-10])
+		else:
+			screen.blit(urano5, [enemigo.x-10, enemigo.y-10])
+			if timer_planeta2 >= 750:
+				timer_planeta2 = 0
 		if congelacion1.x != 10000 and timer_enemigo >= 0 and timer_enemigo <= 5750:
 			if congelacion1.direccionx == -1:
 				screen.blit(hielo2, [congelacion1.x-17.5, congelacion1.y-15])
@@ -1019,7 +1181,18 @@ while True:
 				screen.blit(hielo1, [congelacion3.x-12.5, congelacion3.y-15])
 	elif personaje2 == "Neptuno": 
 		enemigo.LluviaDeDiamantes(plataforma, diamante1, diamante2)
-		screen.blit(neptuno, [enemigo.x-10, enemigo.y-10])
+		if timer_planeta2 <= 150:
+			screen.blit(neptuno1, [enemigo.x-10, enemigo.y-10])
+		elif timer_planeta2 <= 300:
+			screen.blit(neptuno2, [enemigo.x-10, enemigo.y-10])
+		elif timer_planeta2 <= 450:
+			screen.blit(neptuno3, [enemigo.x-10, enemigo.y-10])
+		elif timer_planeta2 <= 600:
+			screen.blit(neptuno4, [enemigo.x-10, enemigo.y-10])
+		else:
+			screen.blit(neptuno5, [enemigo.x-10, enemigo.y-10])
+			if timer_planeta2 >= 750:
+				timer_planeta2 = 0
 		screen.blit(diamante, [diamante1.x-35, diamante1.y-20])
 		screen.blit(diamante, [diamante2.x-35, diamante2.y-20])
 
