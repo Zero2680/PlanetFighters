@@ -315,7 +315,13 @@ explosion_hielo3 = transform.scale(image.load("planetfighters_images/ExplosionHi
 explosion_trampa = transform.scale(image.load("planetfighters_images/ExplosionTrampa.png"), (50, 50))
 explosion_trampa2 = transform.scale(image.load("planetfighters_images/ExplosionTrampa2.png"), (50, 50))
 explosion_trampa3 = transform.scale(image.load("planetfighters_images/ExplosionTrampa3.png"), (50, 50))
-BG = transform.scale(image.load("planetfighters_images/Menu.jpg").convert(), (1280, 720))
+BG = transform.scale(image.load("menu_assets/Menu.jpg").convert(), (1280, 720))
+BG2 = transform.scale(image.load("menu_assets/Menu2.jpg").convert(), (1280, 720))
+marco_azul = transform.scale(image.load("menu_assets/MarcoAzul.png"), (187, 300))
+marco_verde = transform.scale(image.load("menu_assets/MarcoVerde.png"), (187, 300))
+marco_morado = transform.scale(image.load("menu_assets/MarcoMorado.png"), (187, 300))
+marco_rojo = transform.scale(image.load("menu_assets/MarcoRojo.png"), (187, 300))
+marco_amarillo = transform.scale(image.load("menu_assets/MarcoAmarillo.png"), (187, 300))
 
 
 def play():
@@ -1311,9 +1317,11 @@ def select_mode():
                 if PLAY_BUTTON.checkForInput(MENU_MOUSE_POS):
                     play()
                 if OPTIONS_BUTTON.checkForInput(MENU_MOUSE_POS):
-                    options()
+                    select_player()
                 if QUIT_BUTTON.checkForInput(MENU_MOUSE_POS):
-                    menu_main()
+                    #menu_main()
+                    quit()
+                    exit()
             if evento.type==KEYDOWN:
                 if evento.key == K_ESCAPE:
                     main_menu()
@@ -1321,23 +1329,23 @@ def select_mode():
 
 def select_player():
     while True:
-        screen.fill((0, 0, 0))
+        screen.blit(BG2, (0, 0))
 
         MENU_MOUSE_POS = mouse.get_pos()
 
-        #MENU_TEXT = get_font(75).render("SELECT MODE", True, (178, 64, 182))
-        #MENU_RECT = MENU_TEXT.get_rect(center=(640, 100))
+        screen.blit(marco_azul, (112, 40))
+        screen.blit(marco_azul, (112, 380))
+        screen.blit(marco_amarillo, (411, 40))
+        screen.blit(marco_amarillo, (411, 380))
+        screen.blit(marco_verde, (710, 40))
+        screen.blit(marco_verde, (710, 380))
+        screen.blit(marco_rojo, (1009, 40))
+        screen.blit(marco_rojo, (1009, 380))
 
-        PLAY_BUTTON = Button(image=image.load("menu_assets/Play Rect.png"), pos=(640, 250), 
-                            text_input="1VS1", font=get_font(75), base_color=(215, 252, 212), hovering_color=(255, 255, 255))
-        OPTIONS_BUTTON = Button(image=image.load("menu_assets/Options Rect.png"), pos=(640, 400), 
-                            text_input="TOURNEY", font=get_font(75), base_color=(215, 252, 212), hovering_color=(255, 255, 255))
-        QUIT_BUTTON = Button(image=image.load("menu_assets/Quit Rect.png"), pos=(640, 550), 
-                            text_input="QUIT", font=get_font(75), base_color=(215, 252, 212), hovering_color=(255, 255, 255))
+        MERCURIO_BUTTON = Button(image=image.load("menu_assets/Marco Rect.png"), pos=(207, 260), 
+                            text_input="MERCURY", font=get_font(25), base_color=(215, 252, 212), hovering_color=(255, 255, 255))
 
-        screen.blit(MENU_TEXT, MENU_RECT)
-
-        for button in [PLAY_BUTTON, OPTIONS_BUTTON, QUIT_BUTTON]:
+        for button in [MERCURIO_BUTTON]:
             button.changeColor(MENU_MOUSE_POS)
             button.update(screen)
         
@@ -1345,16 +1353,9 @@ def select_player():
             if evento.type == QUIT:
                 quit()
                 exit()
-            if evento.type == MOUSEBUTTONDOWN:
-                if PLAY_BUTTON.checkForInput(MENU_MOUSE_POS):
-                    play()
-                if OPTIONS_BUTTON.checkForInput(MENU_MOUSE_POS):
-                    options()
-                if QUIT_BUTTON.checkForInput(MENU_MOUSE_POS):
-                    menu_main()
             if evento.type==KEYDOWN:
                 if evento.key == K_ESCAPE:
-                    main_menu()
+                    select_mode()
         display.update()
 
 main_menu()
