@@ -1328,6 +1328,7 @@ def select_mode():
         display.update()
 
 def select_player():
+    timer_menu = 0
     while True:
         screen.blit(BG2, (0, 0))
 
@@ -1342,10 +1343,130 @@ def select_player():
         screen.blit(marco_rojo, (1009, 40))
         screen.blit(marco_rojo, (1009, 380))
 
-        MERCURIO_BUTTON = Button(image=image.load("menu_assets/Marco Rect.png"), pos=(207, 260), 
-                            text_input="MERCURY", font=get_font(25), base_color=(215, 252, 212), hovering_color=(255, 255, 255))
+        MERCURIO_BUTTON = Button(image=image.load("menu_assets/Marco Rect.png"), pos=(207, 317), 
+                            text_input="MERCURY", font=get_font(20), base_color=(42, 66, 193), hovering_color=(162, 245, 247))
+        VENUS_BUTTON = Button(image=image.load("menu_assets/Marco Rect.png"), pos=(504, 317), 
+                            text_input="VENUS", font=get_font(20), base_color=(238, 211, 71), hovering_color=(244, 237, 171))
+        LATIERRA_BUTTON = Button(image=image.load("menu_assets/Marco Rect.png"), pos=(803, 317), 
+                            text_input="EARTH", font=get_font(20), base_color=(43, 192, 180), hovering_color=(160, 246, 181))
+        MARTE_BUTTON = Button(image=image.load("menu_assets/Marco Rect.png"), pos=(1102, 317), 
+                            text_input="MARS", font=get_font(20), base_color=(255, 59, 60), hovering_color=(255, 126, 106))
+        JUPITER_BUTTON = Button(image=image.load("menu_assets/Marco Rect.png"), pos=(207, 657), 
+                            text_input="JUPITER", font=get_font(20), base_color=(42, 66, 193), hovering_color=(162, 245, 247))
+        SATURNO_BUTTON = Button(image=image.load("menu_assets/Marco Rect.png"), pos=(504, 657), 
+                            text_input="SATURN", font=get_font(20), base_color=(238, 211, 71), hovering_color=(244, 237, 171))
+        URANO_BUTTON = Button(image=image.load("menu_assets/Marco Rect.png"), pos=(803, 657), 
+                            text_input="URANUS", font=get_font(20), base_color=(43, 192, 180), hovering_color=(160, 246, 181))
+        NEPTUNO_BUTTON = Button(image=image.load("menu_assets/Marco Rect.png"), pos=(1102, 657), 
+                            text_input="NEPTUNE", font=get_font(20), base_color=(255, 59, 60), hovering_color=(255, 126, 106))
 
-        for button in [MERCURIO_BUTTON]:
+        timer_menu += 1
+
+        if timer_menu <= 25:
+            screen.blit(mercurio1, (180, 165))
+        elif timer_menu <= 50:
+            screen.blit(mercurio2, (180, 165))
+        elif timer_menu <= 75:
+            screen.blit(mercurio3, (180, 165))
+        elif timer_menu <= 100:
+            screen.blit(mercurio4, (180, 165))
+        else:
+            screen.blit(mercurio5, (180, 165))
+            if timer_menu > 125:
+                timer_menu = 0
+        
+        if timer_menu <= 25:
+            screen.blit(jupiter1, (168, 493))
+        elif timer_menu <= 50:
+            screen.blit(jupiter2, (168, 493))
+        elif timer_menu <= 75:
+            screen.blit(jupiter3, (168, 493))
+        elif timer_menu <= 100:
+            screen.blit(jupiter4, (168, 493))
+        else:
+            screen.blit(jupiter5, (168, 493))
+            if timer_menu > 125:
+                timer_menu = 0
+        
+        if timer_menu <= 25:
+            screen.blit(venus1, (467, 153))
+        elif timer_menu <= 50:
+            screen.blit(venus2, (467, 153))
+        elif timer_menu <= 75:
+            screen.blit(venus3, (467, 153))
+        elif timer_menu <= 100:
+            screen.blit(venus4, (467, 153))
+        else:
+            screen.blit(venus5, (467, 153))
+            if timer_menu > 125:
+                timer_menu = 0
+
+        if timer_menu <= 25:
+            screen.blit(saturno1, (442, 468))
+        elif timer_menu <= 50:
+            screen.blit(saturno2, (442, 468))
+        elif timer_menu <= 75:
+            screen.blit(saturno3, (442, 468))
+        elif timer_menu <= 100:
+            screen.blit(saturno4, (442, 468))
+        else:
+            screen.blit(saturno5, (442, 468))
+            if timer_menu > 125:
+                timer_menu = 0
+	
+        if timer_menu <= 25:
+            screen.blit(latierra1, (766, 153))
+        elif timer_menu <= 50:
+            screen.blit(latierra2, (766, 153))
+        elif timer_menu <= 75:
+            screen.blit(latierra3, (766, 153))
+        elif timer_menu <= 100:
+            screen.blit(latierra4, (766, 153))
+        else:
+            screen.blit(latierra5, (766, 153))
+            if timer_menu > 125:
+                timer_menu = 0
+
+        if timer_menu <= 25:
+            screen.blit(urano1, (766, 493))
+        elif timer_menu <= 50:
+            screen.blit(urano2, (766, 493))
+        elif timer_menu <= 75:
+            screen.blit(urano3, (766, 493))
+        elif timer_menu <= 100:
+            screen.blit(urano4, (766, 493))
+        else:
+            screen.blit(urano5, (766, 493))
+            if timer_menu > 125:
+                timer_menu = 0
+
+        if timer_menu <= 25:
+            screen.blit(marte1, (1065, 153))
+        elif timer_menu <= 50:
+            screen.blit(marte2, (1065, 153))
+        elif timer_menu <= 75:
+            screen.blit(marte3, (1065, 153))
+        elif timer_menu <= 100:
+            screen.blit(marte4, (1065, 153))
+        else:
+            screen.blit(marte5, (1065, 153))
+            if timer_menu > 125:
+                timer_menu = 0
+
+        if timer_menu <= 25:
+            screen.blit(neptuno1, (1065, 493))
+        elif timer_menu <= 50:
+            screen.blit(neptuno2, (1065, 493))
+        elif timer_menu <= 75:
+            screen.blit(neptuno3, (1065, 493))
+        elif timer_menu <= 100:
+            screen.blit(neptuno4, (1065, 493))
+        else:
+            screen.blit(neptuno5, (1065, 493))
+            if timer_menu > 125:
+                timer_menu = 0
+
+        for button in [MERCURIO_BUTTON, VENUS_BUTTON, LATIERRA_BUTTON, MARTE_BUTTON, JUPITER_BUTTON, SATURNO_BUTTON, URANO_BUTTON, NEPTUNO_BUTTON]:
             button.changeColor(MENU_MOUSE_POS)
             button.update(screen)
         
