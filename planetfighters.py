@@ -178,9 +178,9 @@ class Bola(Objeto):
 		secundaria.Movimiento(enemigo)
 		Chocar(secundaria, enemigo)
 		if self.color == (0,0,255):
-			barra_hp_izquierda(screen, 50, 60, secundaria.vidas, plataforma_color)
+			barra_hp_izquierda(screen, 50, 60, secundaria.vidas, self.color)
 		elif self.color == (255,0,0):
-			barra_hp_derecha(screen, 1060, 60, secundaria.vidas, enemigo_color)
+			barra_hp_derecha(screen, 1060, 60, secundaria.vidas, enemigo.color)
 
 	#JUPITER
 	def Aumentar(self, enemigo):
@@ -317,6 +317,7 @@ explosion_trampa2 = transform.scale(image.load("planetfighters_images/ExplosionT
 explosion_trampa3 = transform.scale(image.load("planetfighters_images/ExplosionTrampa3.png"), (50, 50))
 BG = transform.scale(image.load("menu_assets/Menu.jpg").convert(), (1280, 720))
 BG2 = transform.scale(image.load("menu_assets/Menu2.jpg").convert(), (1280, 720))
+BG3 = transform.scale(image.load("menu_assets/Menu3.jpg").convert(), (1280, 720))
 marco_azul = transform.scale(image.load("menu_assets/MarcoAzul.png"), (187, 300))
 marco_verde = transform.scale(image.load("menu_assets/MarcoVerde.png"), (187, 300))
 marco_morado = transform.scale(image.load("menu_assets/MarcoMorado.png"), (187, 300))
@@ -324,7 +325,7 @@ marco_rojo = transform.scale(image.load("menu_assets/MarcoRojo.png"), (187, 300)
 marco_amarillo = transform.scale(image.load("menu_assets/MarcoAmarillo.png"), (187, 300))
 
 
-def play():
+def play(p1, p2):
 	plataforma = Bola(300,350,55,55, 1, 1, 0, (0,0,255), 100, 0)
 	enemigo = Bola(940,350,55,55, 1, 1, 0, (255,0,0), 100, 1)
 	timer = 0
@@ -333,8 +334,8 @@ def play():
 	timer_planeta1 = 0
 	timer_planeta2 = 0
 	inicial = True
-	personaje1 = "Jupiter"
-	personaje2 = "Venus"
+	personaje1 = p1
+	personaje2 = p2
 	disparo_x = 10001
 	cohete_x = 10001
 	trampa_x = 10001
@@ -1296,16 +1297,16 @@ def select_mode():
         MENU_TEXT = get_font(75).render("SELECT MODE", True, (178, 64, 182))
         MENU_RECT = MENU_TEXT.get_rect(center=(640, 100))
 
-        PLAY_BUTTON = Button(image=image.load("menu_assets/Play Rect.png"), pos=(640, 250), 
+        VS_BUTTON = Button(image=image.load("menu_assets/Play Rect.png"), pos=(640, 250), 
                             text_input="1VS1", font=get_font(75), base_color=(215, 252, 212), hovering_color=(255, 255, 255))
-        OPTIONS_BUTTON = Button(image=image.load("menu_assets/Options Rect.png"), pos=(640, 400), 
+        TOURNEY_BUTTON = Button(image=image.load("menu_assets/Options Rect.png"), pos=(640, 400), 
                             text_input="TOURNEY", font=get_font(75), base_color=(215, 252, 212), hovering_color=(255, 255, 255))
         QUIT_BUTTON = Button(image=image.load("menu_assets/Quit Rect.png"), pos=(640, 550), 
                             text_input="QUIT", font=get_font(75), base_color=(215, 252, 212), hovering_color=(255, 255, 255))
 
         screen.blit(MENU_TEXT, MENU_RECT)
 
-        for button in [PLAY_BUTTON, OPTIONS_BUTTON, QUIT_BUTTON]:
+        for button in [VS_BUTTON, TOURNEY_BUTTON, QUIT_BUTTON]:
             button.changeColor(MENU_MOUSE_POS)
             button.update(screen)
         
@@ -1314,10 +1315,10 @@ def select_mode():
                 quit()
                 exit()
             if evento.type == MOUSEBUTTONDOWN:
-                if PLAY_BUTTON.checkForInput(MENU_MOUSE_POS):
-                    play()
-                if OPTIONS_BUTTON.checkForInput(MENU_MOUSE_POS):
-                    select_player()
+                if VS_BUTTON.checkForInput(MENU_MOUSE_POS):
+                    select_player_vs()
+                if TOURNEY_BUTTON.checkForInput(MENU_MOUSE_POS):
+                    select_player_tourney()
                 if QUIT_BUTTON.checkForInput(MENU_MOUSE_POS):
                     #menu_main()
                     quit()
@@ -1327,9 +1328,17 @@ def select_mode():
                     main_menu()
         display.update()
 
-def select_player():
+def select_player_vs():
     timer_menu = 0
+    p1 = ""
+    p2 = ""
     while True:
+        if p1 == p2:
+            p2 = ""
+
+        if p1 != "" and p2 != "":
+            play(p1, p2)
+        
         screen.blit(BG2, (0, 0))
 
         MENU_MOUSE_POS = mouse.get_pos()
@@ -1477,6 +1486,259 @@ def select_player():
             if evento.type==KEYDOWN:
                 if evento.key == K_ESCAPE:
                     select_mode()
+            if evento.type == MOUSEBUTTONDOWN:
+                if MERCURIO_BUTTON.checkForInput(MENU_MOUSE_POS):
+                    if p1 == "": p1 = "Mercurio"
+                    elif p2 == "": p2 = "Mercurio"
+                if VENUS_BUTTON.checkForInput(MENU_MOUSE_POS):
+                    if p1 == "": p1 = "Venus"
+                    elif p2 == "": p2 = "Venus"
+                if LATIERRA_BUTTON.checkForInput(MENU_MOUSE_POS):
+                    if p1 == "": p1 = "La Tierra"
+                    elif p2 == "": p2 = "La Tierra"
+                if MARTE_BUTTON.checkForInput(MENU_MOUSE_POS):
+                    if p1 == "": p1 = "Marte"
+                    elif p2 == "": p2 = "Marte"
+                if JUPITER_BUTTON.checkForInput(MENU_MOUSE_POS):
+                    if p1 == "": p1 = "Jupiter"
+                    elif p2 == "": p2 = "Jupiter"
+                if SATURNO_BUTTON.checkForInput(MENU_MOUSE_POS):
+                    if p1 == "": p1 = "Saturno"
+                    elif p2 == "": p2 = "Saturno"
+                if URANO_BUTTON.checkForInput(MENU_MOUSE_POS):
+                    if p1 == "": p1 = "Urano"
+                    elif p2 == "": p2 = "Urano"
+                if NEPTUNO_BUTTON.checkForInput(MENU_MOUSE_POS):
+                    if p1 == "": p1 = "Neptuno"
+                    elif p2 == "": p2 = "Neptuno"
         display.update()
+
+def select_player_tourney():
+    timer_menu = 0
+    p1 = ""
+    while True:
+        if p1 != "":
+            cuartos(p1)
+        
+        screen.blit(BG2, (0, 0))
+
+        MENU_MOUSE_POS = mouse.get_pos()
+
+        screen.blit(marco_azul, (112, 40))
+        screen.blit(marco_azul, (112, 380))
+        screen.blit(marco_amarillo, (411, 40))
+        screen.blit(marco_amarillo, (411, 380))
+        screen.blit(marco_verde, (710, 40))
+        screen.blit(marco_verde, (710, 380))
+        screen.blit(marco_rojo, (1009, 40))
+        screen.blit(marco_rojo, (1009, 380))
+
+        MERCURIO_BUTTON = Button(image=image.load("menu_assets/Marco Rect.png"), pos=(207, 317), 
+                            text_input="MERCURY", font=get_font(20), base_color=(42, 66, 193), hovering_color=(162, 245, 247))
+        VENUS_BUTTON = Button(image=image.load("menu_assets/Marco Rect.png"), pos=(504, 317), 
+                            text_input="VENUS", font=get_font(20), base_color=(238, 211, 71), hovering_color=(244, 237, 171))
+        LATIERRA_BUTTON = Button(image=image.load("menu_assets/Marco Rect.png"), pos=(803, 317), 
+                            text_input="EARTH", font=get_font(20), base_color=(43, 192, 180), hovering_color=(160, 246, 181))
+        MARTE_BUTTON = Button(image=image.load("menu_assets/Marco Rect.png"), pos=(1102, 317), 
+                            text_input="MARS", font=get_font(20), base_color=(255, 59, 60), hovering_color=(255, 126, 106))
+        JUPITER_BUTTON = Button(image=image.load("menu_assets/Marco Rect.png"), pos=(207, 657), 
+                            text_input="JUPITER", font=get_font(20), base_color=(42, 66, 193), hovering_color=(162, 245, 247))
+        SATURNO_BUTTON = Button(image=image.load("menu_assets/Marco Rect.png"), pos=(504, 657), 
+                            text_input="SATURN", font=get_font(20), base_color=(238, 211, 71), hovering_color=(244, 237, 171))
+        URANO_BUTTON = Button(image=image.load("menu_assets/Marco Rect.png"), pos=(803, 657), 
+                            text_input="URANUS", font=get_font(20), base_color=(43, 192, 180), hovering_color=(160, 246, 181))
+        NEPTUNO_BUTTON = Button(image=image.load("menu_assets/Marco Rect.png"), pos=(1102, 657), 
+                            text_input="NEPTUNE", font=get_font(20), base_color=(255, 59, 60), hovering_color=(255, 126, 106))
+
+        timer_menu += 1
+
+        if timer_menu <= 25:
+            screen.blit(mercurio1, (180, 165))
+        elif timer_menu <= 50:
+            screen.blit(mercurio2, (180, 165))
+        elif timer_menu <= 75:
+            screen.blit(mercurio3, (180, 165))
+        elif timer_menu <= 100:
+            screen.blit(mercurio4, (180, 165))
+        else:
+            screen.blit(mercurio5, (180, 165))
+            if timer_menu > 125:
+                timer_menu = 0
+        
+        if timer_menu <= 25:
+            screen.blit(jupiter1, (168, 493))
+        elif timer_menu <= 50:
+            screen.blit(jupiter2, (168, 493))
+        elif timer_menu <= 75:
+            screen.blit(jupiter3, (168, 493))
+        elif timer_menu <= 100:
+            screen.blit(jupiter4, (168, 493))
+        else:
+            screen.blit(jupiter5, (168, 493))
+            if timer_menu > 125:
+                timer_menu = 0
+        
+        if timer_menu <= 25:
+            screen.blit(venus1, (467, 153))
+        elif timer_menu <= 50:
+            screen.blit(venus2, (467, 153))
+        elif timer_menu <= 75:
+            screen.blit(venus3, (467, 153))
+        elif timer_menu <= 100:
+            screen.blit(venus4, (467, 153))
+        else:
+            screen.blit(venus5, (467, 153))
+            if timer_menu > 125:
+                timer_menu = 0
+
+        if timer_menu <= 25:
+            screen.blit(saturno1, (442, 468))
+        elif timer_menu <= 50:
+            screen.blit(saturno2, (442, 468))
+        elif timer_menu <= 75:
+            screen.blit(saturno3, (442, 468))
+        elif timer_menu <= 100:
+            screen.blit(saturno4, (442, 468))
+        else:
+            screen.blit(saturno5, (442, 468))
+            if timer_menu > 125:
+                timer_menu = 0
+	
+        if timer_menu <= 25:
+            screen.blit(latierra1, (766, 153))
+        elif timer_menu <= 50:
+            screen.blit(latierra2, (766, 153))
+        elif timer_menu <= 75:
+            screen.blit(latierra3, (766, 153))
+        elif timer_menu <= 100:
+            screen.blit(latierra4, (766, 153))
+        else:
+            screen.blit(latierra5, (766, 153))
+            if timer_menu > 125:
+                timer_menu = 0
+
+        if timer_menu <= 25:
+            screen.blit(urano1, (766, 493))
+        elif timer_menu <= 50:
+            screen.blit(urano2, (766, 493))
+        elif timer_menu <= 75:
+            screen.blit(urano3, (766, 493))
+        elif timer_menu <= 100:
+            screen.blit(urano4, (766, 493))
+        else:
+            screen.blit(urano5, (766, 493))
+            if timer_menu > 125:
+                timer_menu = 0
+
+        if timer_menu <= 25:
+            screen.blit(marte1, (1065, 153))
+        elif timer_menu <= 50:
+            screen.blit(marte2, (1065, 153))
+        elif timer_menu <= 75:
+            screen.blit(marte3, (1065, 153))
+        elif timer_menu <= 100:
+            screen.blit(marte4, (1065, 153))
+        else:
+            screen.blit(marte5, (1065, 153))
+            if timer_menu > 125:
+                timer_menu = 0
+
+        if timer_menu <= 25:
+            screen.blit(neptuno1, (1065, 493))
+        elif timer_menu <= 50:
+            screen.blit(neptuno2, (1065, 493))
+        elif timer_menu <= 75:
+            screen.blit(neptuno3, (1065, 493))
+        elif timer_menu <= 100:
+            screen.blit(neptuno4, (1065, 493))
+        else:
+            screen.blit(neptuno5, (1065, 493))
+            if timer_menu > 125:
+                timer_menu = 0
+
+        for button in [MERCURIO_BUTTON, VENUS_BUTTON, LATIERRA_BUTTON, MARTE_BUTTON, JUPITER_BUTTON, SATURNO_BUTTON, URANO_BUTTON, NEPTUNO_BUTTON]:
+            button.changeColor(MENU_MOUSE_POS)
+            button.update(screen)
+        
+        for evento in event.get():
+            if evento.type == QUIT:
+                quit()
+                exit()
+            if evento.type==KEYDOWN:
+                if evento.key == K_ESCAPE:
+                    select_mode()
+            if evento.type == MOUSEBUTTONDOWN:
+                if MERCURIO_BUTTON.checkForInput(MENU_MOUSE_POS):
+                    if p1 == "": p1 = "Mercurio"
+                if VENUS_BUTTON.checkForInput(MENU_MOUSE_POS):
+                    if p1 == "": p1 = "Venus"
+                if LATIERRA_BUTTON.checkForInput(MENU_MOUSE_POS):
+                    if p1 == "": p1 = "La Tierra"
+                if MARTE_BUTTON.checkForInput(MENU_MOUSE_POS):
+                    if p1 == "": p1 = "Marte"
+                if JUPITER_BUTTON.checkForInput(MENU_MOUSE_POS):
+                    if p1 == "": p1 = "Jupiter"
+                if SATURNO_BUTTON.checkForInput(MENU_MOUSE_POS):
+                    if p1 == "": p1 = "Saturno"
+                if URANO_BUTTON.checkForInput(MENU_MOUSE_POS):
+                    if p1 == "": p1 = "Urano"
+                if NEPTUNO_BUTTON.checkForInput(MENU_MOUSE_POS):
+                    if p1 == "": p1 = "Neptuno"
+        display.update()
+
+def cuartos(p1):
+    planetas = ["Mercurio", "Venus", "La Tierra", "Marte", "Jupiter", "Saturno", "Urano", "Neptuno"]
+    planetas.remove(p1)
+    p2 = choice(planetas)
+    planetas.remove(p2)
+    p3 = choice(planetas)
+    planetas.remove(p3)
+    #p4 = choice(planetas)
+    p4 = "La Tierra"
+    #planetas.remove(p4)
+    p5 = choice(planetas)
+    planetas.remove(p5)
+    p6 = choice(planetas)
+    planetas.remove(p6)
+    p7 = choice(planetas)
+    planetas.remove(p7)
+    p8 = choice(planetas)
+    planetas.remove(p8)
+    images = {"Mercurio": mercurio1, "Venus": venus1, "La Tierra": latierra1, "Marte": marte1, "Jupiter": jupiter1, "Saturno": saturno1, "Urano": urano1, "Neptuno":  neptuno1}
+    while True:
+        screen.blit(BG3, (0, 0))
+
+        MENU_MOUSE_POS = mouse.get_pos()
+
+        PLAY_BUTTON = Button(image=image.load("menu_assets/Play Rect.png"), pos=(640, 550), 
+                            text_input="PLAY", font=get_font(75), base_color=(215, 252, 212), hovering_color=(255, 255, 255))
+
+        screen.blit(images[p1], (50, 50))
+        screen.blit(images[p2], (50, 233))
+        screen.blit(images[p3], (50, 417))
+        screen.blit(images[p4], (50, 600))
+        screen.blit(images[p5], (1150, 50))
+        screen.blit(images[p6], (1150, 233))
+        screen.blit(images[p7], (1150, 417))
+        screen.blit(images[p8], (1150, 600))
+
+
+        for button in [PLAY_BUTTON]:
+            button.changeColor(MENU_MOUSE_POS)
+            button.update(screen)
+        
+        for evento in event.get():
+            if evento.type == QUIT:
+                quit()
+                exit()
+            if evento.type == MOUSEBUTTONDOWN:
+                if PLAY_BUTTON.checkForInput(MENU_MOUSE_POS):
+                    quit()
+                    exit()
+            if evento.type==KEYDOWN:
+                if evento.key == K_ESCAPE:
+                    main_menu()
+        display.update()
+
 
 main_menu()
