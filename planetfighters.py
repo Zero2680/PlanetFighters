@@ -323,7 +323,8 @@ marco_verde = transform.scale(image.load("menu_assets/MarcoVerde.png"), (187, 30
 marco_morado = transform.scale(image.load("menu_assets/MarcoMorado.png"), (187, 300))
 marco_rojo = transform.scale(image.load("menu_assets/MarcoRojo.png"), (187, 300))
 marco_amarillo = transform.scale(image.load("menu_assets/MarcoAmarillo.png"), (187, 300))
-
+linea1 = transform.scale(image.load("menu_assets/Linea1.png"), (100, 100))
+linea2 = transform.scale(image.load("menu_assets/Linea2.png"), (100, 100))
 
 def play(p1, p2):
 	plataforma = Bola(300,350,55,55, 1, 1, 0, (0,0,255), 100, 0)
@@ -1693,9 +1694,8 @@ def cuartos(p1):
     planetas.remove(p2)
     p3 = choice(planetas)
     planetas.remove(p3)
-    #p4 = choice(planetas)
-    p4 = "La Tierra"
-    #planetas.remove(p4)
+    p4 = choice(planetas)
+    planetas.remove(p4)
     p5 = choice(planetas)
     planetas.remove(p5)
     p6 = choice(planetas)
@@ -1705,6 +1705,12 @@ def cuartos(p1):
     p8 = choice(planetas)
     planetas.remove(p8)
     images = {"Mercurio": mercurio1, "Venus": venus1, "La Tierra": latierra1, "Marte": marte1, "Jupiter": jupiter1, "Saturno": saturno1, "Urano": urano1, "Neptuno":  neptuno1}
+    images_x1 = {"Mercurio": 62, "Venus": 50, "La Tierra": 50, "Marte": 50, "Jupiter": 50, "Saturno": 25, "Urano": 50, "Neptuno":  50}
+    images_x2 = {"Mercurio": 1162, "Venus": 1150, "La Tierra": 1150, "Marte": 1150, "Jupiter": 1150, "Saturno": 1125, "Urano": 1150, "Neptuno":  1150}
+    images_y1 = {"Mercurio": 62, "Venus": 50, "La Tierra": 50, "Marte": 50, "Jupiter": 50, "Saturno": 25, "Urano": 50, "Neptuno":  50}
+    images_y2 = {"Mercurio": 245, "Venus": 233, "La Tierra": 233, "Marte": 233, "Jupiter": 233, "Saturno": 208, "Urano": 233, "Neptuno":  233}
+    images_y3 = {"Mercurio": 429, "Venus": 417, "La Tierra": 417, "Marte": 417, "Jupiter": 417, "Saturno": 392, "Urano": 417, "Neptuno":  417}
+    images_y4 = {"Mercurio": 612, "Venus": 600, "La Tierra": 600, "Marte": 600, "Jupiter": 600, "Saturno": 575, "Urano": 600, "Neptuno":  600}
     while True:
         screen.blit(BG3, (0, 0))
 
@@ -1713,15 +1719,22 @@ def cuartos(p1):
         PLAY_BUTTON = Button(image=image.load("menu_assets/Play Rect.png"), pos=(640, 550), 
                             text_input="PLAY", font=get_font(75), base_color=(215, 252, 212), hovering_color=(255, 255, 255))
 
-        screen.blit(images[p1], (50, 50))
-        screen.blit(images[p2], (50, 233))
-        screen.blit(images[p3], (50, 417))
-        screen.blit(images[p4], (50, 600))
-        screen.blit(images[p5], (1150, 50))
-        screen.blit(images[p6], (1150, 233))
-        screen.blit(images[p7], (1150, 417))
-        screen.blit(images[p8], (1150, 600))
-
+        screen.blit(images[p1], (images_x1[p1], images_y1[p1]))
+        screen.blit(linea1, (37, 130))
+        screen.blit(linea2, (87, 130))
+        screen.blit(images[p2], (images_x1[p2], images_y2[p2]))
+        screen.blit(images[p3], (images_x1[p3], images_y3[p3]))
+        screen.blit(linea1, (37, 497))
+        screen.blit(linea2, (87, 497))
+        screen.blit(images[p4], (images_x1[p4], images_y4[p4]))
+        screen.blit(images[p5], (images_x2[p5], images_y1[p5]))
+        screen.blit(linea1, (1137, 130))
+        screen.blit(linea2, (1087, 130))
+        screen.blit(images[p6], (images_x2[p6], images_y2[p6]))
+        screen.blit(images[p7], (images_x2[p7], images_y3[p7]))
+        screen.blit(linea1, (1137, 497))
+        screen.blit(linea2, (1087, 497))
+        screen.blit(images[p8], (images_x2[p8], images_y4[p8]))
 
         for button in [PLAY_BUTTON]:
             button.changeColor(MENU_MOUSE_POS)
