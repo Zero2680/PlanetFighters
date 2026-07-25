@@ -326,8 +326,8 @@ marco_amarillo = transform.scale(image.load("menu_assets/MarcoAmarillo.png"), (1
 linea1 = transform.scale(image.load("menu_assets/Linea1.png"), (100, 100))
 linea2 = transform.scale(image.load("menu_assets/Linea2.png"), (100, 100))
 
-def play(p1, p2):
-	plataforma = Bola(300,350,55,55, 1, 1, 0, (0,0,255), 100, 0)
+def play(p1, p2, tourney):
+	plataforma = Bola(300,350,55,55, 1, 1, 0, (0,0,255), 10, 0)
 	enemigo = Bola(940,350,55,55, 1, 1, 0, (255,0,0), 100, 1)
 	timer = 0
 	timer_plataforma = 0
@@ -348,7 +348,7 @@ def play(p1, p2):
 	plataforma_color = (0,0,255)
 	enemigo_color = (255,0,0)
 	z = -1
-
+	name = {"Mercurio": "MERCURY", "Venus": "VENUS", "La Tierra": "EARTH", "Marte": "MARS", "Jupiter": "JUPITER", "Saturno": "SATURN", "Urano": "URANUS", "Neptuno": "NEPTUNE"}
 	while True:
 		global colision
 
@@ -358,9 +358,10 @@ def play(p1, p2):
 
 		screen.blit(space, [0, 0]) 
 		
-		plataforma.Movimiento(enemigo)
-		enemigo.Movimiento(plataforma)
-		Chocar(plataforma, enemigo)
+		if plataforma.vidas > 0 and enemigo.vidas > 0:
+			plataforma.Movimiento(enemigo)
+			enemigo.Movimiento(plataforma)
+			Chocar(plataforma, enemigo)
 
 		barra_hp_derecha(screen, 1060, 40, enemigo.vidas, enemigo_color)
 		barra_hp_izquierda(screen, 50, 40, plataforma.vidas, plataforma_color)
@@ -1211,6 +1212,32 @@ def play(p1, p2):
 					timer_planeta2 = 0
 			screen.blit(diamante, [diamante1.x-35, diamante1.y-20])
 			screen.blit(diamante, [diamante2.x-35, diamante2.y-20])
+		
+		if plataforma.vidas <= 0:
+			WIN_TEXT = get_font(75).render(name[p2] + " WINS", True, enemigo_color)
+			WIN_RECT = WIN_TEXT.get_rect(center=(640, 100))
+			screen.blit(WIN_TEXT, WIN_RECT)
+			MENU_MOUSE_POS = mouse.get_pos()
+			QUIT_BUTTON = Button(image=image.load("menu_assets/Quit Rect.png"), pos=(640, 550), 
+				text_input="QUIT", font=get_font(75), base_color=(215, 252, 212), hovering_color=(255, 255, 255))
+			for button in [QUIT_BUTTON]:
+				button.changeColor(MENU_MOUSE_POS)
+				button.update(screen)
+
+		if enemigo.vidas <= 0:
+			WIN_TEXT = get_font(75).render(name[p2] + " WINS", True, plataforma_color)
+			WIN_RECT = WIN_TEXT.get_rect(center=(640, 100))
+			screen.blit(WIN_TEXT, WIN_RECT)
+			MENU_MOUSE_POS = mouse.get_pos()
+			if tourney == True:
+				QUIT_BUTTON = Button(image=image.load("menu_assets/Options Rect.png"), pos=(640, 550), 
+					text_input="CONTINUE", font=get_font(75), base_color=(215, 252, 212), hovering_color=(255, 255, 255))
+			else:
+				QUIT_BUTTON = Button(image=image.load("menu_assets/Quit Rect.png"), pos=(640, 550), 
+					text_input="QUIT", font=get_font(75), base_color=(215, 252, 212), hovering_color=(255, 255, 255))
+			for button in [QUIT_BUTTON]:
+				button.changeColor(MENU_MOUSE_POS)
+				button.update(screen)
 
 		for evento in event.get():
 			if evento.type==QUIT:
@@ -1220,6 +1247,13 @@ def play(p1, p2):
 				if evento.key == K_ESCAPE:
 					quit()
 					exit()
+			if evento.type == MOUSEBUTTONDOWN:
+				if QUIT_BUTTON.checkForInput(MENU_MOUSE_POS) and plataforma.vidas == 0:
+					if tourney == True: select_player_tourney()
+					else: select_player_vs()
+				if QUIT_BUTTON.checkForInput(MENU_MOUSE_POS) and enemigo.vidas == 0:
+					if tourney == True: select_player_tourney()
+					else: select_player_vs()
 		display.flip()
 
 def options():
@@ -1338,7 +1372,7 @@ def select_player_vs():
             p2 = ""
 
         if p1 != "" and p2 != "":
-            play(p1, p2)
+            play(p1, p2, False)
         
         screen.blit(BG2, (0, 0))
 
@@ -1704,13 +1738,18 @@ def cuartos(p1):
     planetas.remove(p7)
     p8 = choice(planetas)
     planetas.remove(p8)
-    images = {"Mercurio": mercurio1, "Venus": venus1, "La Tierra": latierra1, "Marte": marte1, "Jupiter": jupiter1, "Saturno": saturno1, "Urano": urano1, "Neptuno":  neptuno1}
+    images1 = {"Mercurio": mercurio1, "Venus": venus1, "La Tierra": latierra1, "Marte": marte1, "Jupiter": jupiter1, "Saturno": saturno1, "Urano": urano1, "Neptuno":  neptuno1}
+    images2 = {"Mercurio": mercurio2, "Venus": venus2, "La Tierra": latierra2, "Marte": marte2, "Jupiter": jupiter2, "Saturno": saturno2, "Urano": urano2, "Neptuno":  neptuno2}
+    images3 = {"Mercurio": mercurio3, "Venus": venus3, "La Tierra": latierra3, "Marte": marte3, "Jupiter": jupiter3, "Saturno": saturno3, "Urano": urano3, "Neptuno":  neptuno3}
+    images4 = {"Mercurio": mercurio4, "Venus": venus4, "La Tierra": latierra4, "Marte": marte4, "Jupiter": jupiter4, "Saturno": saturno4, "Urano": urano4, "Neptuno":  neptuno4}
+    images5 = {"Mercurio": mercurio5, "Venus": venus5, "La Tierra": latierra5, "Marte": marte5, "Jupiter": jupiter5, "Saturno": saturno5, "Urano": urano5, "Neptuno":  neptuno5}    
     images_x1 = {"Mercurio": 62, "Venus": 50, "La Tierra": 50, "Marte": 50, "Jupiter": 50, "Saturno": 25, "Urano": 50, "Neptuno":  50}
     images_x2 = {"Mercurio": 1162, "Venus": 1150, "La Tierra": 1150, "Marte": 1150, "Jupiter": 1150, "Saturno": 1125, "Urano": 1150, "Neptuno":  1150}
     images_y1 = {"Mercurio": 62, "Venus": 50, "La Tierra": 50, "Marte": 50, "Jupiter": 50, "Saturno": 25, "Urano": 50, "Neptuno":  50}
     images_y2 = {"Mercurio": 245, "Venus": 233, "La Tierra": 233, "Marte": 233, "Jupiter": 233, "Saturno": 208, "Urano": 233, "Neptuno":  233}
     images_y3 = {"Mercurio": 429, "Venus": 417, "La Tierra": 417, "Marte": 417, "Jupiter": 417, "Saturno": 392, "Urano": 417, "Neptuno":  417}
     images_y4 = {"Mercurio": 612, "Venus": 600, "La Tierra": 600, "Marte": 600, "Jupiter": 600, "Saturno": 575, "Urano": 600, "Neptuno":  600}
+    timer_menu = 0
     while True:
         screen.blit(BG3, (0, 0))
 
@@ -1718,23 +1757,69 @@ def cuartos(p1):
 
         PLAY_BUTTON = Button(image=image.load("menu_assets/Play Rect.png"), pos=(640, 550), 
                             text_input="PLAY", font=get_font(75), base_color=(215, 252, 212), hovering_color=(255, 255, 255))
-
-        screen.blit(images[p1], (images_x1[p1], images_y1[p1]))
+        
         screen.blit(linea1, (37, 130))
         screen.blit(linea2, (87, 130))
-        screen.blit(images[p2], (images_x1[p2], images_y2[p2]))
-        screen.blit(images[p3], (images_x1[p3], images_y3[p3]))
+        screen.blit(linea1, (37, 130))
+        screen.blit(linea2, (87, 130))
         screen.blit(linea1, (37, 497))
         screen.blit(linea2, (87, 497))
-        screen.blit(images[p4], (images_x1[p4], images_y4[p4]))
-        screen.blit(images[p5], (images_x2[p5], images_y1[p5]))
         screen.blit(linea1, (1137, 130))
         screen.blit(linea2, (1087, 130))
-        screen.blit(images[p6], (images_x2[p6], images_y2[p6]))
-        screen.blit(images[p7], (images_x2[p7], images_y3[p7]))
         screen.blit(linea1, (1137, 497))
         screen.blit(linea2, (1087, 497))
-        screen.blit(images[p8], (images_x2[p8], images_y4[p8]))
+        screen.blit(linea1, (1137, 497))
+        screen.blit(linea2, (1087, 497))
+
+        timer_menu += 1
+
+        if timer_menu <= 75:
+            screen.blit(images1[p1], (images_x1[p1], images_y1[p1]))
+            screen.blit(images1[p2], (images_x1[p2], images_y2[p2]))
+            screen.blit(images1[p3], (images_x1[p3], images_y3[p3]))
+            screen.blit(images1[p4], (images_x1[p4], images_y4[p4]))
+            screen.blit(images1[p5], (images_x2[p5], images_y1[p5]))
+            screen.blit(images1[p6], (images_x2[p6], images_y2[p6]))
+            screen.blit(images1[p7], (images_x2[p7], images_y3[p7]))
+            screen.blit(images1[p8], (images_x2[p8], images_y4[p8]))
+        elif timer_menu <= 150:
+            screen.blit(images2[p1], (images_x1[p1], images_y1[p1]))
+            screen.blit(images2[p2], (images_x1[p2], images_y2[p2]))
+            screen.blit(images2[p3], (images_x1[p3], images_y3[p3]))
+            screen.blit(images2[p4], (images_x1[p4], images_y4[p4]))
+            screen.blit(images2[p5], (images_x2[p5], images_y1[p5]))
+            screen.blit(images2[p6], (images_x2[p6], images_y2[p6]))
+            screen.blit(images2[p7], (images_x2[p7], images_y3[p7]))
+            screen.blit(images2[p8], (images_x2[p8], images_y4[p8]))
+        elif timer_menu <= 225:
+            screen.blit(images3[p1], (images_x1[p1], images_y1[p1]))
+            screen.blit(images3[p2], (images_x1[p2], images_y2[p2]))
+            screen.blit(images3[p3], (images_x1[p3], images_y3[p3]))
+            screen.blit(images3[p4], (images_x1[p4], images_y4[p4]))
+            screen.blit(images3[p5], (images_x2[p5], images_y1[p5]))
+            screen.blit(images3[p6], (images_x2[p6], images_y2[p6]))
+            screen.blit(images3[p7], (images_x2[p7], images_y3[p7]))
+            screen.blit(images3[p8], (images_x2[p8], images_y4[p8]))
+        elif timer_menu <= 300:
+            screen.blit(images4[p1], (images_x1[p1], images_y1[p1]))
+            screen.blit(images4[p2], (images_x1[p2], images_y2[p2]))
+            screen.blit(images4[p3], (images_x1[p3], images_y3[p3]))
+            screen.blit(images4[p4], (images_x1[p4], images_y4[p4]))
+            screen.blit(images4[p5], (images_x2[p5], images_y1[p5]))
+            screen.blit(images4[p6], (images_x2[p6], images_y2[p6]))
+            screen.blit(images4[p7], (images_x2[p7], images_y3[p7]))
+            screen.blit(images4[p8], (images_x2[p8], images_y4[p8]))
+        else:
+            screen.blit(images5[p1], (images_x1[p1], images_y1[p1]))
+            screen.blit(images5[p2], (images_x1[p2], images_y2[p2]))
+            screen.blit(images5[p3], (images_x1[p3], images_y3[p3]))
+            screen.blit(images5[p4], (images_x1[p4], images_y4[p4]))
+            screen.blit(images5[p5], (images_x2[p5], images_y1[p5]))
+            screen.blit(images5[p6], (images_x2[p6], images_y2[p6]))
+            screen.blit(images5[p7], (images_x2[p7], images_y3[p7]))
+            screen.blit(images5[p8], (images_x2[p8], images_y4[p8]))
+            if timer_menu > 375:
+                timer_menu = 0
 
         for button in [PLAY_BUTTON]:
             button.changeColor(MENU_MOUSE_POS)
