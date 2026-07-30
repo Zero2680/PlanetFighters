@@ -96,6 +96,7 @@ class Bola(Objeto):
 		if self.y < 750:
 			if self.y == -100:
 				self.x = randrange(1, 13) * 100
+				neptuno_sound.play()
 			self.y += 0.25
 		if self.y >= 750:
 			self.y = -100
@@ -115,10 +116,16 @@ class Bola(Objeto):
 			disparo3.x = 10000            
 		if disparo1.puntuacion >= 100 and disparo1.x != 10000:
 			disparo1.Movimiento(enemigo)
+			if disparo1.puntuacion == 100:
+				marte_sound.play()
 		if disparo1.puntuacion >= 200 and disparo2.x != 10000:
 			disparo2.Movimiento(enemigo)
+			if disparo1.puntuacion == 200:
+				marte_sound.play()
 		if disparo1.puntuacion >= 300 and disparo3.x != 10000:
 			disparo3.Movimiento(enemigo)
+			if disparo1.puntuacion == 300:
+				marte_sound.play()
 
 	#LA TIERRA
 	def DispararTeledirigido(self, enemigo, disparo):			
@@ -127,12 +134,18 @@ class Bola(Objeto):
 			disparo.x = 10000  
 		if disparo.x != 10000:       
 			disparo.MovimientoTeledirigido(enemigo)
+			if disparo.puntuacion == 0:
+				latierra_sound.play()
+				disparo.puntuacion = 1
 
 	#VENUS
 	def PonerTrampa(self, enemigo, trampa):
 		if enemigo.check_colisiones(trampa):
 			enemigo.vidas -= 3
 			trampa.x = 10000
+		if trampa.puntuacion == 0:
+			venus_sound.play()
+			trampa.puntuacion = 1
 		trampa.DibujarObjeto()
 
 	#URANO
@@ -142,6 +155,9 @@ class Bola(Objeto):
 			disparo.x = 10000
 		if disparo.x != 10000:
 			disparo.Movimiento(enemigo)
+			if disparo.puntuacion == 0:
+				urano_sound.play()
+				disparo.puntuacion = 1
 		else:
 			disparo.puntuacion += 1
 			disparo.direccionx = enemigo.direccionx
@@ -156,6 +172,11 @@ class Bola(Objeto):
 	def GolpearEnArea(self, enemigo, area):
 		area.x = self.x - 10
 		area.y = self.y - 10
+		area.puntuacion += 1
+		if area.puntuacion == 1:
+			saturno_sound.play()
+		if area.puntuacion >= 200:
+			area.puntuacion = 0
 		area.DibujarObjeto()
 		if enemigo.check_colisiones(area):
 			enemigo.vidas -= 5
@@ -174,6 +195,7 @@ class Bola(Objeto):
 			self.ancho = self.ancho / 2
 			self.largo = self.largo / 2
 			self.vidas = self.vidas / 2
+			mercurio_sound.play()
 			self.puntuacion = 1
 		secundaria.Movimiento(enemigo)
 		Chocar(secundaria, enemigo)
@@ -204,6 +226,15 @@ class Bola(Objeto):
 				enemigo.vidas -= 5
 			elif self.ancho >= 100:
 				enemigo.vidas -= 10
+		if self.ancho >= 65 and self.puntuacion == 0:
+			jupiter_sound2.play()
+			self.puntuacion = 1
+		elif self.ancho >= 80 and self.puntuacion == 1:
+			jupiter_sound2.play()
+			self.puntuacion = 2
+		elif self.ancho >= 100 and self.puntuacion == 2:
+			jupiter_sound2.play()
+			self.puntuacion = 3
 	
 	#NEPTUNO
 	def LluviaDeDiamantes(self, enemigo, diamante1, diamante2):
@@ -325,10 +356,28 @@ marco_rojo = transform.scale(image.load("menu_assets/MarcoRojo.png"), (187, 300)
 marco_amarillo = transform.scale(image.load("menu_assets/MarcoAmarillo.png"), (187, 300))
 linea1 = transform.scale(image.load("menu_assets/Linea1.png"), (100, 100))
 linea2 = transform.scale(image.load("menu_assets/Linea2.png"), (100, 100))
+mercurio_sound = mixer.Sound('planetfighters_sounds/Mercurio.ogg')
+mercurio_sound.set_volume(0.5)
+venus_sound = mixer.Sound('planetfighters_sounds/Venus.ogg')
+venus_sound.set_volume(0.5)
+latierra_sound = mixer.Sound('planetfighters_sounds/LaTierra.ogg')
+latierra_sound.set_volume(0.5)
+marte_sound = mixer.Sound('planetfighters_sounds/Marte.ogg')
+marte_sound.set_volume(0.5)
+jupiter_sound = mixer.Sound('planetfighters_sounds/Jupiter.ogg')
+jupiter_sound.set_volume(0.5)
+jupiter_sound2 = mixer.Sound('planetfighters_sounds/Jupiter2.ogg')
+jupiter_sound2.set_volume(0.5)
+saturno_sound = mixer.Sound('planetfighters_sounds/Saturno.ogg')
+saturno_sound.set_volume(0.5)
+urano_sound = mixer.Sound('planetfighters_sounds/Urano.ogg')
+urano_sound.set_volume(0.5)
+neptuno_sound = mixer.Sound('planetfighters_sounds/Neptuno.ogg')
+neptuno_sound.set_volume(0.5)
 
 def play(p1, p2, tourney, cont):
 	plataforma = Bola(300,350,55,55, 1, 1, 0, (0,0,255), 100, 0)
-	enemigo = Bola(940,350,55,55, 1, 1, 0, (255,0,0), 10, 1)
+	enemigo = Bola(940,350,55,55, 1, 1, 0, (255,0,0), 100, 1)
 	timer = 0
 	timer_plataforma = 0
 	timer_enemigo = 0
@@ -350,9 +399,15 @@ def play(p1, p2, tourney, cont):
 	z = -1
 	name = {"Mercurio": "MERCURY", "Venus": "VENUS", "La Tierra": "EARTH", "Marte": "MARS", "Jupiter": "JUPITER", "Saturno": "SATURN", "Urano": "URANUS", "Neptuno": "NEPTUNE"}
 	while True:
-		global colision
+		global colision, musica
 
 		if z == -1:
+			if musica != "Batalla":
+				mixer.music.set_volume(0.25)
+				mixer.music.load('planetfighters_sounds/Batalla.ogg')
+				mixer.music.set_volume(mixer.music.get_volume())
+				mixer.music.play(-1)
+				musica = "Batalla"
 			colision = False
 			z = 0
 
@@ -1294,8 +1349,19 @@ def options():
 
         display.update()
 
-def main_menu():
+def main_menu(inicio):
+    z = -1
     while True:
+        global musica
+        if z == -1 and inicio == True:
+            mixer.music.set_volume(0.25)
+            mixer.music.load('planetfighters_sounds/Menu.ogg')
+            mixer.music.set_volume(mixer.music.get_volume())
+            mixer.music.play(-1)
+            musica = "Menu"
+            inicio = False
+            z = 0
+
         screen.blit(BG, (0, 0))
 
         MENU_MOUSE_POS = mouse.get_pos()
@@ -1336,7 +1402,17 @@ def main_menu():
         display.update()
 
 def select_mode():
+    z = -1
     while True:
+        global musica
+        if z == -1 and musica != "Menu":
+            mixer.music.set_volume(0.25)
+            mixer.music.load('planetfighters_sounds/Menu.ogg')
+            mixer.music.set_volume(mixer.music.get_volume())
+            mixer.music.play(-1)
+            musica = "Menu"
+            z = 0
+		
         screen.blit(BG, (0, 0))
 
         MENU_MOUSE_POS = mouse.get_pos()
@@ -1372,14 +1448,24 @@ def select_mode():
                     exit()
             if evento.type==KEYDOWN:
                 if evento.key == K_ESCAPE:
-                    main_menu()
+                    main_menu(False)
         display.update()
 
 def select_player_vs():
     timer_menu = 0
     p1 = ""
     p2 = ""
+    z = -1
     while True:
+        global musica
+        if z == -1 and musica != "Menu":
+            mixer.music.set_volume(0.25)
+            mixer.music.load('planetfighters_sounds/Menu.ogg')
+            mixer.music.set_volume(mixer.music.get_volume())
+            mixer.music.play(-1)
+            musica = "Menu"
+            z = 0
+
         if p1 == p2:
             p2 = ""
 
@@ -1563,7 +1649,16 @@ def select_player_vs():
 def select_player_tourney():
     timer_menu = 0
     p1 = ""
+    z = -1
     while True:
+        global musica
+        if z == -1 and musica != "Menu":
+            mixer.music.set_volume(0.25)
+            mixer.music.load('planetfighters_sounds/Menu.ogg')
+            mixer.music.set_volume(mixer.music.get_volume())
+            mixer.music.play(-1)
+            musica = "Menu"
+            z = 0
         if p1 != "":
             cuartos(p1)
         
@@ -1764,9 +1859,15 @@ def cuartos(p1):
     timer_menu = 0
     z = -1
     while True:
-        global pq
+        global pq, musica
 
         if z == -1:
+            if musica != "Menu":
+                mixer.music.set_volume(0.25)
+                mixer.music.load('planetfighters_sounds/Menu.ogg')
+                mixer.music.set_volume(mixer.music.get_volume())
+                mixer.music.play(-1)
+                musica = "Menu"
             pq = [p1, p2, p3, p4, p5, p6, p7, p8]
             z = 0
 
@@ -1849,11 +1950,11 @@ def cuartos(p1):
                     play(p1, p2, True, 1)
             if evento.type==KEYDOWN:
                 if evento.key == K_ESCAPE:
-                    main_menu()
+                    main_menu(False)
         display.update()
 
 def semifinales(p1):
-	global pq
+	global pq, musica
 	p2 = choice([pq[2], pq[3]])
 	p3 = choice([pq[4], pq[5]])
 	p4 = choice([pq[6], pq[7]])
@@ -1878,6 +1979,12 @@ def semifinales(p1):
 		global ps
 
 		if z == -1:
+			if musica != "Menu":
+				mixer.music.set_volume(0.25)
+				mixer.music.load('planetfighters_sounds/Menu.ogg')
+				mixer.music.set_volume(mixer.music.get_volume())
+				mixer.music.play(-1)
+				musica = "Menu"
 			ps = [p1, p2, p3, p4]
 			z = 0
 
@@ -1958,11 +2065,11 @@ def semifinales(p1):
 					play(p1, p2, True, 2)
 			if evento.type==KEYDOWN:
 				if evento.key == K_ESCAPE:
-					main_menu()
+					main_menu(False)
 		display.update()
 
 def final(p1):
-	global pq, ps
+	global pq, ps, musica
 	p2 = choice([ps[2], ps[3]])
 	images1 = {"Mercurio": mercurio1, "Venus": venus1, "La Tierra": latierra1, "Marte": marte1, "Jupiter": jupiter1, "Saturno": saturno1, "Urano": urano1, "Neptuno":  neptuno1}
 	images2 = {"Mercurio": mercurio2, "Venus": venus2, "La Tierra": latierra2, "Marte": marte2, "Jupiter": jupiter2, "Saturno": saturno2, "Urano": urano2, "Neptuno":  neptuno2}
@@ -1988,6 +2095,12 @@ def final(p1):
 		global pf
 
 		if z == -1:
+			if musica != "Menu":
+				mixer.music.set_volume(0.25)
+				mixer.music.load('planetfighters_sounds/Menu.ogg')
+				mixer.music.set_volume(mixer.music.get_volume())
+				mixer.music.play(-1)
+				musica = "Menu"
 			pf = [p1, p2]
 			z = 0
 
@@ -2069,11 +2182,11 @@ def final(p1):
 					play(p1, p2, True, 3)
 			if evento.type==KEYDOWN:
 				if evento.key == K_ESCAPE:
-					main_menu()
+					main_menu(False)
 		display.update()
 
 def ganador(p1, name, color):
-	global pq, ps, pf
+	global pq, ps, pf, musica
 	images1 = {"Mercurio": mercurio1, "Venus": venus1, "La Tierra": latierra1, "Marte": marte1, "Jupiter": jupiter1, "Saturno": saturno1, "Urano": urano1, "Neptuno":  neptuno1}
 	images2 = {"Mercurio": mercurio2, "Venus": venus2, "La Tierra": latierra2, "Marte": marte2, "Jupiter": jupiter2, "Saturno": saturno2, "Urano": urano2, "Neptuno":  neptuno2}
 	images3 = {"Mercurio": mercurio3, "Venus": venus3, "La Tierra": latierra3, "Marte": marte3, "Jupiter": jupiter3, "Saturno": saturno3, "Urano": urano3, "Neptuno":  neptuno3}
@@ -2097,6 +2210,14 @@ def ganador(p1, name, color):
 	timer_menu = 0
 	z = -1
 	while True:
+		if z == -1:
+			if musica != "Win":
+				mixer.music.set_volume(0.25)
+				mixer.music.load('planetfighters_sounds/Win.ogg')
+				mixer.music.set_volume(mixer.music.get_volume())
+				mixer.music.play(-1)
+				musica = "Win"
+			z = 0
 
 		screen.blit(BG3, (0, 0))
 
@@ -2179,7 +2300,7 @@ def ganador(p1, name, color):
 					exit()
 			if evento.type==KEYDOWN:
 				if evento.key == K_ESCAPE:
-					main_menu()
+					main_menu(False)
 		display.update()
 
-main_menu()
+main_menu(True)
