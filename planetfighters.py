@@ -5,6 +5,8 @@ from button import Button
 screen = display.set_mode((1280, 720), FULLSCREEN)
 display.set_caption('Planet Fighters')
 screen.fill((0, 0, 0)) 
+icono = image.load("planetfighters_images/icono_planetfighters.png")
+display.set_icon(icono)
 
 class Objeto(sprite.Sprite):
 	def __init__(self, x, y, ancho, largo, direccionx, direcciony, puntuacion, color, vidas, team):
@@ -62,7 +64,30 @@ class Bola(Objeto):
 					self.y = self.y - 0.25
 				else:
 					self.y = self.y + 0.25
-			self.DibujarObjeto()
+	
+	def MovimientoRapido(self, enemigo):
+			#TOCA EL BORDE
+			if self.x <= 15:
+				self.direccionx = 1
+			elif self.x >= 1280-self.ancho:
+				self.direccionx = -1
+			if self.y <= 0:
+				self.direcciony = 1
+			elif self.y >= 720-self.largo:
+				self.direcciony = -1 
+			#MOVIMIENTO
+			if self.direccionx == 1:
+				self.x = self.x + 0.375
+				if self.direcciony == -1:
+					self.y = self.y - 0.375
+				else:
+					self.y = self.y + 0.375
+			elif self.direccionx == -1:
+				self.x = self.x - 0.375
+				if self.direcciony == -1:
+					self.y = self.y - 0.375
+				else:
+					self.y = self.y + 0.375
 
 	def MovimientoTeledirigido(self, enemigo):
 			#TOCA EL BORDE
@@ -87,7 +112,6 @@ class Bola(Objeto):
 					self.y = self.y - 0.1875
 				else:
 					self.y = self.y + 0.1875
-			self.DibujarObjeto()
 	
 	def Movimiento_Diamante(self, enemigo):
 		if self.check_colisiones(enemigo):
@@ -100,7 +124,6 @@ class Bola(Objeto):
 			self.y += 0.25
 		if self.y >= 750:
 			self.y = -100
-		self.DibujarObjeto()
 
 	#MARTE
 	def Disparar(self, enemigo, disparo1, disparo2, disparo3):			
@@ -115,22 +138,22 @@ class Bola(Objeto):
 			enemigo.vidas -= 1
 			disparo3.x = 10000            
 		if disparo1.puntuacion >= 100 and disparo1.x != 10000:
-			disparo1.Movimiento(enemigo)
+			disparo1.MovimientoRapido(enemigo)
 			if disparo1.puntuacion == 100:
 				marte_sound.play()
 		if disparo1.puntuacion >= 200 and disparo2.x != 10000:
-			disparo2.Movimiento(enemigo)
+			disparo2.MovimientoRapido(enemigo)
 			if disparo1.puntuacion == 200:
 				marte_sound.play()
 		if disparo1.puntuacion >= 300 and disparo3.x != 10000:
-			disparo3.Movimiento(enemigo)
+			disparo3.MovimientoRapido(enemigo)
 			if disparo1.puntuacion == 300:
 				marte_sound.play()
 
 	#LA TIERRA
 	def DispararTeledirigido(self, enemigo, disparo):			
 		if enemigo.check_colisiones(disparo):
-			enemigo.vidas -= 5
+			enemigo.vidas -= 3
 			disparo.x = 10000  
 		if disparo.x != 10000:       
 			disparo.MovimientoTeledirigido(enemigo)
@@ -141,20 +164,19 @@ class Bola(Objeto):
 	#VENUS
 	def PonerTrampa(self, enemigo, trampa):
 		if enemigo.check_colisiones(trampa):
-			enemigo.vidas -= 3
+			enemigo.vidas -= 7
 			trampa.x = 10000
 		if trampa.puntuacion == 0:
 			venus_sound.play()
 			trampa.puntuacion = 1
-		trampa.DibujarObjeto()
 
 	#URANO
 	def DispararCongelacion(self, enemigo, disparo):
 		if enemigo.check_colisiones(disparo):
-			enemigo.vidas -= 3
+			enemigo.vidas -= 5
 			disparo.x = 10000
 		if disparo.x != 10000:
-			disparo.Movimiento(enemigo)
+			disparo.MovimientoRapido(enemigo)
 			if disparo.puntuacion == 0:
 				urano_sound.play()
 				disparo.puntuacion = 1
@@ -177,9 +199,8 @@ class Bola(Objeto):
 			saturno_sound.play()
 		if area.puntuacion >= 200:
 			area.puntuacion = 0
-		area.DibujarObjeto()
 		if enemigo.check_colisiones(area):
-			enemigo.vidas -= 5
+			enemigo.vidas -= 10
 			if self.direccionx == 1:
 				self.direccionx = -1
 			else:
@@ -206,7 +227,7 @@ class Bola(Objeto):
 
 	#JUPITER
 	def Aumentar(self, enemigo):
-		global colision
+		global colision, i
 		if self.x <= 15:
 			self.ancho += 2
 			self.largo += 2
@@ -226,15 +247,15 @@ class Bola(Objeto):
 				enemigo.vidas -= 5
 			elif self.ancho >= 100:
 				enemigo.vidas -= 10
-		if self.ancho >= 65 and self.puntuacion == 0:
+		if self.ancho >= 65 and i == 0:
 			jupiter_sound2.play()
-			self.puntuacion = 1
-		elif self.ancho >= 80 and self.puntuacion == 1:
+			i = 1
+		elif self.ancho >= 80 and i == 1:
 			jupiter_sound2.play()
-			self.puntuacion = 2
-		elif self.ancho >= 100 and self.puntuacion == 2:
+			i = 2
+		elif self.ancho >= 100 and i == 2:
 			jupiter_sound2.play()
-			self.puntuacion = 3
+			i = 3
 	
 	#NEPTUNO
 	def LluviaDeDiamantes(self, enemigo, diamante1, diamante2):
@@ -305,6 +326,21 @@ jupiter2 = transform.scale(image.load("planetfighters_images/Jupiter2.png"), (75
 jupiter3 = transform.scale(image.load("planetfighters_images/Jupiter3.png"), (75, 75))
 jupiter4 = transform.scale(image.load("planetfighters_images/Jupiter4.png"), (75, 75))
 jupiter5 = transform.scale(image.load("planetfighters_images/Jupiter5.png"), (75, 75))
+jupiter11 = transform.scale(image.load("planetfighters_images/Jupiter1.png"), (88, 88))
+jupiter22 = transform.scale(image.load("planetfighters_images/Jupiter2.png"), (88, 88))
+jupiter33 = transform.scale(image.load("planetfighters_images/Jupiter3.png"), (88, 88))
+jupiter44 = transform.scale(image.load("planetfighters_images/Jupiter4.png"), (88, 88))
+jupiter55 = transform.scale(image.load("planetfighters_images/Jupiter5.png"), (88, 88))
+jupiter111 = transform.scale(image.load("planetfighters_images/Jupiter1.png"), (109, 109))
+jupiter222 = transform.scale(image.load("planetfighters_images/Jupiter2.png"), (109, 109))
+jupiter333 = transform.scale(image.load("planetfighters_images/Jupiter3.png"), (109, 109))
+jupiter444 = transform.scale(image.load("planetfighters_images/Jupiter4.png"), (109, 109))
+jupiter555 = transform.scale(image.load("planetfighters_images/Jupiter5.png"), (109, 109))
+jupiter1111 = transform.scale(image.load("planetfighters_images/Jupiter1.png"), (136, 136))
+jupiter2222 = transform.scale(image.load("planetfighters_images/Jupiter2.png"), (136, 136))
+jupiter3333 = transform.scale(image.load("planetfighters_images/Jupiter3.png"), (136, 136))
+jupiter4444 = transform.scale(image.load("planetfighters_images/Jupiter4.png"), (136, 136))
+jupiter5555 = transform.scale(image.load("planetfighters_images/Jupiter5.png"), (136, 136))
 minijupiter = transform.scale(image.load("planetfighters_images/Jupiter3.png"), (25, 25))
 saturno1 = transform.scale(image.load("planetfighters_images/Saturno1.png"), (125, 125))
 saturno2 = transform.scale(image.load("planetfighters_images/Saturno2.png"), (125, 125))
@@ -399,7 +435,7 @@ def play(p1, p2, tourney, cont):
 	z = -1
 	name = {"Mercurio": "MERCURY", "Venus": "VENUS", "La Tierra": "EARTH", "Marte": "MARS", "Jupiter": "JUPITER", "Saturno": "SATURN", "Urano": "URANUS", "Neptuno": "NEPTUNE"}
 	while True:
-		global colision, musica
+		global colision, musica, i
 
 		if z == -1:
 			if musica != "Batalla":
@@ -409,6 +445,7 @@ def play(p1, p2, tourney, cont):
 				mixer.music.play(-1)
 				musica = "Batalla"
 			colision = False
+			i = 0
 			z = 0
 
 		screen.blit(space, [0, 0]) 
@@ -828,18 +865,58 @@ def play(p1, p2, tourney, cont):
 			if meteorito9.x != 10000 and timer_plataforma >= 4000 and timer_plataforma <= 9750: screen.blit(roca, [meteorito9.x-10, meteorito9.y-10])
 		elif personaje1 == "Jupiter": 
 			plataforma.Aumentar(enemigo)
-			if timer_planeta1 <= 150:
-				screen.blit(jupiter1, [plataforma.x-10, plataforma.y-10])
-			elif timer_planeta1 <= 300:
-				screen.blit(jupiter2, [plataforma.x-10, plataforma.y-10])
-			elif timer_planeta1 <= 450:
-				screen.blit(jupiter3, [plataforma.x-10, plataforma.y-10])
-			elif timer_planeta1 <= 600:
-				screen.blit(jupiter4, [plataforma.x-10, plataforma.y-10])
+			if plataforma.ancho >= 65 and plataforma.ancho < 80:
+				if timer_planeta2 <= 150:
+					screen.blit(jupiter11, [plataforma.x-10, plataforma.y-10])
+				elif timer_planeta2 <= 300:
+					screen.blit(jupiter22, [plataforma.x-10, plataforma.y-10])
+				elif timer_planeta2 <= 450:
+					screen.blit(jupiter33, [plataforma.x-10, plataforma.y-10])
+				elif timer_planeta2 <= 600:
+					screen.blit(jupiter44, [plataforma.x-10, plataforma.y-10])
+				else:
+					screen.blit(jupiter55, [plataforma.x-10, plataforma.y-10])
+					if timer_planeta2 >= 750:
+						timer_planeta2 = 0
+			elif plataforma.ancho >= 80 and plataforma.ancho < 100:
+				if timer_planeta2 <= 150:
+					screen.blit(jupiter111, [plataforma.x-10, plataforma.y-10])
+				elif timer_planeta2 <= 300:
+					screen.blit(jupiter222, [plataforma.x-10, plataforma.y-10])
+				elif timer_planeta2 <= 450:
+					screen.blit(jupiter333, [plataforma.x-10, plataforma.y-10])
+				elif timer_planeta2 <= 600:
+					screen.blit(jupiter444, [plataforma.x-10, plataforma.y-10])
+				else:
+					screen.blit(jupiter555, [plataforma.x-10, plataforma.y-10])
+					if timer_planeta2 >= 750:
+						timer_planeta2 = 0
+			elif plataforma.ancho >= 100:
+				if timer_planeta2 <= 150:
+					screen.blit(jupiter1111, [plataforma.x-10, plataforma.y-10])
+				elif timer_planeta2 <= 300:
+					screen.blit(jupiter2222, [plataforma.x-10, plataforma.y-10])
+				elif timer_planeta2 <= 450:
+					screen.blit(jupiter3333, [plataforma.x-10, plataforma.y-10])
+				elif timer_planeta2 <= 600:
+					screen.blit(jupiter4444, [plataforma.x-10, plataforma.y-10])
+				else:
+					screen.blit(jupiter5555, [plataforma.x-10, plataforma.y-10])
+					if timer_planeta2 >= 750:
+						timer_planeta2 = 0
 			else:
-				screen.blit(jupiter5, [plataforma.x-10, plataforma.y-10])
-				if timer_planeta1 >= 750:
-					timer_planeta1 = 0
+				if timer_planeta2 <= 150:
+					screen.blit(jupiter1, [plataforma.x-10, plataforma.y-10])
+				elif timer_planeta2 <= 300:
+					screen.blit(jupiter2, [plataforma.x-10, plataforma.y-10])
+				elif timer_planeta2 <= 450:
+					screen.blit(jupiter3, [plataforma.x-10, plataforma.y-10])
+				elif timer_planeta2 <= 600:
+					screen.blit(jupiter4, [plataforma.x-10, plataforma.y-10])
+				else:
+					screen.blit(jupiter5, [plataforma.x-10, plataforma.y-10])
+					if timer_planeta2 >= 750:
+						timer_planeta2 = 0
 		elif personaje1 == "Saturno": 
 			if timer_plataforma >= 3000:
 				plataforma.GolpearEnArea(enemigo, area)
@@ -1158,18 +1235,58 @@ def play(p1, p2, tourney, cont):
 			if meteorito9.x != 10000 and timer_enemigo >= 4000 and timer_enemigo <= 9750: screen.blit(roca, [meteorito9.x-10, meteorito9.y-10])
 		elif personaje2 == "Jupiter": 
 			enemigo.Aumentar(plataforma)
-			if timer_planeta2 <= 150:
-				screen.blit(jupiter1, [enemigo.x-10, enemigo.y-10])
-			elif timer_planeta2 <= 300:
-				screen.blit(jupiter2, [enemigo.x-10, enemigo.y-10])
-			elif timer_planeta2 <= 450:
-				screen.blit(jupiter3, [enemigo.x-10, enemigo.y-10])
-			elif timer_planeta2 <= 600:
-				screen.blit(jupiter4, [enemigo.x-10, enemigo.y-10])
+			if enemigo.ancho >= 65 and enemigo.ancho < 80:
+				if timer_planeta2 <= 150:
+					screen.blit(jupiter11, [enemigo.x-10, enemigo.y-10])
+				elif timer_planeta2 <= 300:
+					screen.blit(jupiter22, [enemigo.x-10, enemigo.y-10])
+				elif timer_planeta2 <= 450:
+					screen.blit(jupiter33, [enemigo.x-10, enemigo.y-10])
+				elif timer_planeta2 <= 600:
+					screen.blit(jupiter44, [enemigo.x-10, enemigo.y-10])
+				else:
+					screen.blit(jupiter55, [enemigo.x-10, enemigo.y-10])
+					if timer_planeta2 >= 750:
+						timer_planeta2 = 0
+			elif enemigo.ancho >= 80 and enemigo.ancho < 100:
+				if timer_planeta2 <= 150:
+					screen.blit(jupiter111, [enemigo.x-10, enemigo.y-10])
+				elif timer_planeta2 <= 300:
+					screen.blit(jupiter222, [enemigo.x-10, enemigo.y-10])
+				elif timer_planeta2 <= 450:
+					screen.blit(jupiter333, [enemigo.x-10, enemigo.y-10])
+				elif timer_planeta2 <= 600:
+					screen.blit(jupiter444, [enemigo.x-10, enemigo.y-10])
+				else:
+					screen.blit(jupiter555, [enemigo.x-10, enemigo.y-10])
+					if timer_planeta2 >= 750:
+						timer_planeta2 = 0
+			elif enemigo.ancho >= 100:
+				if timer_planeta2 <= 150:
+					screen.blit(jupiter1111, [enemigo.x-10, enemigo.y-10])
+				elif timer_planeta2 <= 300:
+					screen.blit(jupiter2222, [enemigo.x-10, enemigo.y-10])
+				elif timer_planeta2 <= 450:
+					screen.blit(jupiter3333, [enemigo.x-10, enemigo.y-10])
+				elif timer_planeta2 <= 600:
+					screen.blit(jupiter4444, [enemigo.x-10, enemigo.y-10])
+				else:
+					screen.blit(jupiter5555, [enemigo.x-10, enemigo.y-10])
+					if timer_planeta2 >= 750:
+						timer_planeta2 = 0
 			else:
-				screen.blit(jupiter5, [enemigo.x-10, enemigo.y-10])
-				if timer_planeta2 >= 750:
-					timer_planeta2 = 0
+				if timer_planeta2 <= 150:
+					screen.blit(jupiter1, [enemigo.x-10, enemigo.y-10])
+				elif timer_planeta2 <= 300:
+					screen.blit(jupiter2, [enemigo.x-10, enemigo.y-10])
+				elif timer_planeta2 <= 450:
+					screen.blit(jupiter3, [enemigo.x-10, enemigo.y-10])
+				elif timer_planeta2 <= 600:
+					screen.blit(jupiter4, [enemigo.x-10, enemigo.y-10])
+				else:
+					screen.blit(jupiter5, [enemigo.x-10, enemigo.y-10])
+					if timer_planeta2 >= 750:
+						timer_planeta2 = 0
 		elif personaje2 == "Saturno": 
 			if timer_enemigo >= 3000:
 				enemigo.GolpearEnArea(plataforma, area)
