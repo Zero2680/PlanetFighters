@@ -228,25 +228,19 @@ class Bola(Objeto):
 	#JUPITER
 	def Aumentar(self, enemigo):
 		global colision, i
-		if self.x <= 15:
-			self.ancho += 2
-			self.largo += 2
-		elif self.x >= 1265:
-			self.ancho += 2
-			self.largo += 2
-		if self.y <= 0:
-			self.ancho += 2
-			self.largo += 2
-		elif self.y >= 700:
-			self.ancho += 2
-			self.largo += 2
-		if self.check_colisiones(enemigo) and colision == False:
-			if self.ancho >= 65 and self.ancho < 80:
-				enemigo.vidas -= 2.5
-			elif self.ancho >= 80 and self.ancho < 100:
-				enemigo.vidas -= 5
-			elif self.ancho >= 100:
-				enemigo.vidas -= 10
+		if self.ancho < 100:
+			if self.x <= 15:
+				self.ancho += 2
+				self.largo += 2
+			elif self.x >= 1265:
+				self.ancho += 2
+				self.largo += 2
+			if self.y <= 0:
+				self.ancho += 2
+				self.largo += 2
+			elif self.y >= 700:
+				self.ancho += 2
+				self.largo += 2
 		if self.ancho >= 65 and i == 0:
 			jupiter_sound2.play()
 			i = 1
@@ -267,6 +261,12 @@ def Chocar(plataforma, enemigo):
 	if plataforma.check_colisiones(enemigo) == True and colision == False:
 		plataforma.vidas -= 5
 		enemigo.vidas -= 5
+		if plataforma.ancho >= 65 and plataforma.ancho < 80:
+			enemigo.vidas -= 2.5
+		elif plataforma.ancho >= 80 and plataforma.ancho < 100:
+			enemigo.vidas -= 5
+		elif plataforma.ancho >= 100:
+			enemigo.vidas -= 10
 		if plataforma.direccionx == 1:
 			plataforma.direccionx = -1
 		else:
@@ -439,7 +439,7 @@ def play(p1, p2, tourney, cont):
 
 		if z == -1:
 			if musica != "Batalla":
-				mixer.music.set_volume(0.25)
+				mixer.music.set_volume(mixer.music.get_volume())
 				mixer.music.load('planetfighters_sounds/Batalla.ogg')
 				mixer.music.set_volume(mixer.music.get_volume())
 				mixer.music.play(-1)
@@ -1396,6 +1396,10 @@ def play(p1, p2, tourney, cont):
 					quit()
 					exit()
 			if evento.type==KEYDOWN:
+				if evento.key == K_1 and mixer.music.get_volume() > 0.0:
+					mixer.music.set_volume(mixer.music.get_volume() - 0.1)
+				if evento.key == K_2 and mixer.music.get_volume() > 0.0:
+					mixer.music.set_volume(mixer.music.get_volume() + 0.1)
 				if evento.key == K_ESCAPE:
 					quit()
 					exit()
@@ -1437,6 +1441,11 @@ def finish(win, p1, name, color, tourney, cont):
 					if QUIT_BUTTON.checkForInput(FINISH_MOUSE_POS) and win == "enemigo":
 						if tourney == True: select_player_tourney()
 						else: select_player_vs()
+			if evento.type==KEYDOWN:
+				if evento.key == K_1 and mixer.music.get_volume() > 0.0:
+					mixer.music.set_volume(mixer.music.get_volume() - 0.1)
+				if evento.key == K_2 and mixer.music.get_volume() > 0.0:
+					mixer.music.set_volume(mixer.music.get_volume() + 0.1)
 
 		display.update()
 
@@ -1444,14 +1453,22 @@ def options():
     while True:
         OPTIONS_MOUSE_POS = mouse.get_pos()
 
-        screen.fill((255, 255, 255))
+        screen.blit(BG, (0, 0))
 
-        OPTIONS_TEXT = get_font(45).render("This is the OPTIONS screen.", True, (0, 0, 0))
-        OPTIONS_RECT = OPTIONS_TEXT.get_rect(center=(640, 260))
+        OPTIONS_TEXT = get_font(45).render("OPTIONS", True, (178, 64, 182))
+        OPTIONS_RECT = OPTIONS_TEXT.get_rect(center=(640, 100))
         screen.blit(OPTIONS_TEXT, OPTIONS_RECT)
 
-        OPTIONS_BACK = Button(image=None, pos=(640, 460), 
-                            text_input="BACK", font=get_font(75), base_color=(0, 0, 0), hovering_color=(0, 255, 0))
+        DECREASE_TEXT = get_font(45).render("1 : Decrease Volume", True, (215, 252, 212))
+        DECREASE_RECT = DECREASE_TEXT.get_rect(center=(640, 250))
+        screen.blit(DECREASE_TEXT, DECREASE_RECT)
+
+        INCREASE_TEXT = get_font(45).render("2 : Increase Volume", True, (215, 252, 212))
+        INCREASE_RECT = INCREASE_TEXT.get_rect(center=(640, 400))
+        screen.blit(INCREASE_TEXT, INCREASE_RECT)
+
+        OPTIONS_BACK = Button(image=None, pos=(640, 550), 
+                            text_input="BACK", font=get_font(75), base_color=(215, 252, 212), hovering_color=(255, 255, 255))
 
         OPTIONS_BACK.changeColor(OPTIONS_MOUSE_POS)
         OPTIONS_BACK.update(screen)
@@ -1462,7 +1479,12 @@ def options():
                 exit()
             if evento.type == MOUSEBUTTONDOWN:
                 if OPTIONS_BACK.checkForInput(OPTIONS_MOUSE_POS):
-                    main_menu()
+                    main_menu(False)
+            if evento.type==KEYDOWN:
+                if evento.key == K_1 and mixer.music.get_volume() > 0.0:
+                    mixer.music.set_volume(mixer.music.get_volume() - 0.1)
+                if evento.key == K_2 and mixer.music.get_volume() > 0.0:
+                    mixer.music.set_volume(mixer.music.get_volume() + 0.1)
 
         display.update()
 
@@ -1512,6 +1534,10 @@ def main_menu(inicio):
                     quit()
                     exit()
             if evento.type==KEYDOWN:
+                if evento.key == K_1 and mixer.music.get_volume() > 0.0:
+                    mixer.music.set_volume(mixer.music.get_volume() - 0.1)
+                if evento.key == K_2 and mixer.music.get_volume() > 0.0:
+                    mixer.music.set_volume(mixer.music.get_volume() + 0.1)
                 if evento.key == K_ESCAPE:
                     quit()
                     exit()
@@ -1523,7 +1549,7 @@ def select_mode():
     while True:
         global musica
         if z == -1 and musica != "Menu":
-            mixer.music.set_volume(0.25)
+            mixer.music.set_volume(mixer.music.get_volume())
             mixer.music.load('planetfighters_sounds/Menu.ogg')
             mixer.music.set_volume(mixer.music.get_volume())
             mixer.music.play(-1)
@@ -1564,6 +1590,10 @@ def select_mode():
                     quit()
                     exit()
             if evento.type==KEYDOWN:
+                if evento.key == K_1 and mixer.music.get_volume() > 0.0:
+                    mixer.music.set_volume(mixer.music.get_volume() - 0.1)
+                if evento.key == K_2 and mixer.music.get_volume() > 0.0:
+                    mixer.music.set_volume(mixer.music.get_volume() + 0.1)
                 if evento.key == K_ESCAPE:
                     main_menu(False)
         display.update()
@@ -1576,7 +1606,7 @@ def select_player_vs():
     while True:
         global musica
         if z == -1 and musica != "Menu":
-            mixer.music.set_volume(0.25)
+            mixer.music.set_volume(mixer.music.get_volume())
             mixer.music.load('planetfighters_sounds/Menu.ogg')
             mixer.music.set_volume(mixer.music.get_volume())
             mixer.music.play(-1)
@@ -1734,6 +1764,10 @@ def select_player_vs():
                 quit()
                 exit()
             if evento.type==KEYDOWN:
+                if evento.key == K_1 and mixer.music.get_volume() > 0.0:
+                    mixer.music.set_volume(mixer.music.get_volume() - 0.1)
+                if evento.key == K_2 and mixer.music.get_volume() > 0.0:
+                    mixer.music.set_volume(mixer.music.get_volume() + 0.1)
                 if evento.key == K_ESCAPE:
                     select_mode()
             if evento.type == MOUSEBUTTONDOWN:
@@ -1770,7 +1804,7 @@ def select_player_tourney():
     while True:
         global musica
         if z == -1 and musica != "Menu":
-            mixer.music.set_volume(0.25)
+            mixer.music.set_volume(mixer.music.get_volume())
             mixer.music.load('planetfighters_sounds/Menu.ogg')
             mixer.music.set_volume(mixer.music.get_volume())
             mixer.music.play(-1)
@@ -1924,6 +1958,10 @@ def select_player_tourney():
                 quit()
                 exit()
             if evento.type==KEYDOWN:
+                if evento.key == K_1 and mixer.music.get_volume() > 0.0:
+                    mixer.music.set_volume(mixer.music.get_volume() - 0.1)
+                if evento.key == K_2 and mixer.music.get_volume() > 0.0:
+                    mixer.music.set_volume(mixer.music.get_volume() + 0.1)
                 if evento.key == K_ESCAPE:
                     select_mode()
             if evento.type == MOUSEBUTTONDOWN:
@@ -1980,7 +2018,7 @@ def cuartos(p1):
 
         if z == -1:
             if musica != "Menu":
-                mixer.music.set_volume(0.25)
+                mixer.music.set_volume(mixer.music.get_volume())
                 mixer.music.load('planetfighters_sounds/Menu.ogg')
                 mixer.music.set_volume(mixer.music.get_volume())
                 mixer.music.play(-1)
@@ -2066,6 +2104,10 @@ def cuartos(p1):
                 if PLAY_BUTTON.checkForInput(MENU_MOUSE_POS):
                     play(p1, p2, True, 1)
             if evento.type==KEYDOWN:
+                if evento.key == K_1 and mixer.music.get_volume() > 0.0:
+                    mixer.music.set_volume(mixer.music.get_volume() - 0.1)
+                if evento.key == K_2 and mixer.music.get_volume() > 0.0:
+                    mixer.music.set_volume(mixer.music.get_volume() + 0.1)
                 if evento.key == K_ESCAPE:
                     main_menu(False)
         display.update()
@@ -2097,7 +2139,7 @@ def semifinales(p1):
 
 		if z == -1:
 			if musica != "Menu":
-				mixer.music.set_volume(0.25)
+				mixer.music.set_volume(mixer.music.get_volume())
 				mixer.music.load('planetfighters_sounds/Menu.ogg')
 				mixer.music.set_volume(mixer.music.get_volume())
 				mixer.music.play(-1)
@@ -2181,6 +2223,10 @@ def semifinales(p1):
 				if PLAY_BUTTON.checkForInput(MENU_MOUSE_POS):
 					play(p1, p2, True, 2)
 			if evento.type==KEYDOWN:
+				if evento.key == K_1 and mixer.music.get_volume() > 0.0:
+					mixer.music.set_volume(mixer.music.get_volume() - 0.1)
+				if evento.key == K_2 and mixer.music.get_volume() > 0.0:
+					mixer.music.set_volume(mixer.music.get_volume() + 0.1)
 				if evento.key == K_ESCAPE:
 					main_menu(False)
 		display.update()
@@ -2213,7 +2259,7 @@ def final(p1):
 
 		if z == -1:
 			if musica != "Menu":
-				mixer.music.set_volume(0.25)
+				mixer.music.set_volume(mixer.music.get_volume())
 				mixer.music.load('planetfighters_sounds/Menu.ogg')
 				mixer.music.set_volume(mixer.music.get_volume())
 				mixer.music.play(-1)
@@ -2298,6 +2344,10 @@ def final(p1):
 				if PLAY_BUTTON.checkForInput(MENU_MOUSE_POS):
 					play(p1, p2, True, 3)
 			if evento.type==KEYDOWN:
+				if evento.key == K_1 and mixer.music.get_volume() > 0.0:
+					mixer.music.set_volume(mixer.music.get_volume() - 0.1)
+				if evento.key == K_2 and mixer.music.get_volume() > 0.0:
+					mixer.music.set_volume(mixer.music.get_volume() + 0.1)
 				if evento.key == K_ESCAPE:
 					main_menu(False)
 		display.update()
@@ -2329,7 +2379,7 @@ def ganador(p1, name, color):
 	while True:
 		if z == -1:
 			if musica != "Win":
-				mixer.music.set_volume(0.25)
+				mixer.music.set_volume(mixer.music.get_volume())
 				mixer.music.load('planetfighters_sounds/Win.ogg')
 				mixer.music.set_volume(mixer.music.get_volume())
 				mixer.music.play(-1)
@@ -2416,6 +2466,10 @@ def ganador(p1, name, color):
 					quit()
 					exit()
 			if evento.type==KEYDOWN:
+				if evento.key == K_1 and mixer.music.get_volume() > 0.0:
+					mixer.music.set_volume(mixer.music.get_volume() - 0.1)
+				if evento.key == K_2 and mixer.music.get_volume() > 0.0:
+					mixer.music.set_volume(mixer.music.get_volume() + 0.1)
 				if evento.key == K_ESCAPE:
 					main_menu(False)
 		display.update()
