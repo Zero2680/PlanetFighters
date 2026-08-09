@@ -175,6 +175,7 @@ class Bola(Objeto):
 		if enemigo.check_colisiones(disparo):
 			enemigo.vidas -= 5
 			disparo.x = 10000
+			disparo.puntuacion = 0
 		if disparo.x != 10000:
 			disparo.MovimientoRapido(enemigo)
 			if disparo.puntuacion == 0:
@@ -182,13 +183,15 @@ class Bola(Objeto):
 				disparo.puntuacion = 1
 		else:
 			disparo.puntuacion += 1
-			disparo.direccionx = enemigo.direccionx
-			disparo.direcciony = enemigo.direcciony
-			enemigo.direccionx = 0
-			enemigo.direcciony = 0
-			if disparo.puntuacion >= 5000:
+			if disparo.puntuacion == 2:
+				disparo.direccionx = enemigo.direccionx
+				disparo.direcciony = enemigo.direcciony
+				enemigo.direccionx = 0
+				enemigo.direcciony = 0
+			if disparo.puntuacion == 1500:
 				enemigo.direccionx = disparo.direccionx
 				enemigo.direcciony = disparo.direcciony
+				disparo.puntuacion = 1501
 
 	#SATURNO	
 	def GolpearEnArea(self, enemigo, area):
@@ -211,19 +214,23 @@ class Bola(Objeto):
 				enemigo.direccionx = 1
 
 	#MERCURIO
-	def Separarse(self, enemigo, secundaria):
-		if self.puntuacion == 0:
+	def Separarse(self, enemigo, secundaria, color):
+		global separar
+		if separar == True:
 			self.ancho = self.ancho / 2
 			self.largo = self.largo / 2
 			self.vidas = self.vidas / 2
 			mercurio_sound.play()
-			self.puntuacion = 1
-		secundaria.Movimiento(enemigo)
-		Chocar(secundaria, enemigo)
-		if self.color == (0,0,255):
-			barra_hp_izquierda(screen, 50, 60, secundaria.vidas, self.color)
-		elif self.color == (255,0,0):
-			barra_hp_derecha(screen, 1060, 60, secundaria.vidas, enemigo.color)
+			separar = False
+		if self != secundaria:
+			secundaria.Movimiento(enemigo)
+			Chocar(secundaria, enemigo)
+			if self.color == (0,0,255):
+				screen.blit(barra, [44, 55])
+				barra_hp_izquierda(screen, 50, 60, secundaria.vidas, color)
+			elif self.color == (255,0,0):
+				screen.blit(barra, [1054, 55])
+				barra_hp_derecha(screen, 1060, 60, secundaria.vidas, color)
 
 	#JUPITER
 	def Aumentar(self, enemigo):
@@ -414,6 +421,7 @@ neptuno_sound.set_volume(0.5)
 def play(p1, p2, tourney, cont):
 	plataforma = Bola(300,350,55,55, 1, 1, 0, (0,0,255), 100, 0)
 	enemigo = Bola(940,350,55,55, 1, 1, 0, (255,0,0), 100, 1)
+	secundaria = Bola(10000,10000,55,55, 0, 0, 0, (0,0,0), 0, 0)
 	timer = 0
 	timer_plataforma = 0
 	timer_enemigo = 0
@@ -435,7 +443,7 @@ def play(p1, p2, tourney, cont):
 	z = -1
 	name = {"Mercurio": "MERCURY", "Venus": "VENUS", "La Tierra": "EARTH", "Marte": "MARS", "Jupiter": "JUPITER", "Saturno": "SATURN", "Urano": "URANUS", "Neptuno": "NEPTUNE"}
 	while True:
-		global colision, musica, i
+		global colision, musica, i, separar
 
 		if z == -1:
 			if musica != "Batalla":
@@ -446,6 +454,7 @@ def play(p1, p2, tourney, cont):
 				musica = "Batalla"
 			colision = False
 			i = 0
+			separar = True
 			z = 0
 
 		screen.blit(space, [0, 0]) 
@@ -647,7 +656,7 @@ def play(p1, p2, tourney, cont):
 
 		#PLATAFORMA
 		if personaje1 == "Mercurio": 
-			plataforma.Separarse(enemigo, secundaria)
+			plataforma.Separarse(enemigo, secundaria, plataforma_color)
 			if timer_planeta1 <= 150:
 				screen.blit(mercurio1, [plataforma.x-10, plataforma.y-10])
 				screen.blit(mercurio1, [secundaria.x-10, secundaria.y-10])
@@ -1017,7 +1026,7 @@ def play(p1, p2, tourney, cont):
 
 		#ENEMIGO
 		if personaje2 == "Mercurio": 
-			enemigo.Separarse(plataforma, secundaria)		
+			enemigo.Separarse(plataforma, secundaria, enemigo_color)		
 			if timer_planeta2 <= 150:
 				screen.blit(mercurio1, [enemigo.x-10, enemigo.y-10])
 				screen.blit(mercurio1, [secundaria.x-10, secundaria.y-10])
@@ -1386,10 +1395,20 @@ def play(p1, p2, tourney, cont):
 			screen.blit(diamante, [diamante2.x-35, diamante2.y-20])
 		
 		if plataforma.vidas <= 0:
-			finish("enemigo", p1, name[p2], enemigo_color, tourney, cont)
+			if personaje1 != "Mercurio":
+				finish("enemigo", p1, name[p2], enemigo_color, tourney, cont)
+			elif personaje1 == "Mercurio" and secundaria.vidas <= 0:
+				finish("enemigo", p1, name[p2], enemigo_color, tourney, cont)
+			else:
+				plataforma = secundaria
 
 		if enemigo.vidas <= 0:
-			finish("plataforma", p1, name[p1], plataforma_color, tourney, cont)
+			if personaje2 != "Mercurio":
+				finish("plataforma", p1, name[p1], plataforma_color, tourney, cont)
+			elif personaje2 == "Mercurio" and secundaria.vidas <= 0:
+				finish("plataforma", p1, name[p1], plataforma_color, tourney, cont)
+			else:
+				enemigo = secundaria
 
 		for evento in event.get():
 			if evento.type==QUIT:
