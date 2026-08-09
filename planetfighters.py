@@ -188,10 +188,10 @@ class Bola(Objeto):
 				disparo.direcciony = enemigo.direcciony
 				enemigo.direccionx = 0
 				enemigo.direcciony = 0
-			if disparo.puntuacion == 1500:
+			if disparo.puntuacion == 1000:
 				enemigo.direccionx = disparo.direccionx
 				enemigo.direcciony = disparo.direcciony
-				disparo.puntuacion = 1501
+				disparo.puntuacion = 1000
 
 	#SATURNO	
 	def GolpearEnArea(self, enemigo, area):
@@ -224,7 +224,7 @@ class Bola(Objeto):
 			separar = False
 		if self != secundaria:
 			secundaria.Movimiento(enemigo)
-			Chocar(secundaria, enemigo)
+			Chocar2(secundaria, enemigo)
 			if self.color == (0,0,255):
 				screen.blit(barra, [44, 55])
 				barra_hp_izquierda(screen, 50, 60, secundaria.vidas, color)
@@ -286,6 +286,28 @@ def Chocar(plataforma, enemigo):
 	if plataforma.check_colisiones(enemigo) is not True and colision == True:
 		colision = False
 
+def Chocar2(plataforma, enemigo):
+	global colision2
+	if plataforma.check_colisiones(enemigo) == True and colision == False:
+		plataforma.vidas -= 5
+		enemigo.vidas -= 5
+		if plataforma.ancho >= 65 and plataforma.ancho < 80:
+			enemigo.vidas -= 2.5
+		elif plataforma.ancho >= 80 and plataforma.ancho < 100:
+			enemigo.vidas -= 5
+		elif plataforma.ancho >= 100:
+			enemigo.vidas -= 10
+		if plataforma.direccionx == 1:
+			plataforma.direccionx = -1
+		else:
+			plataforma.direccionx = 1
+		if enemigo.direccionx == 1:
+			enemigo.direccionx = -1
+		else:
+			enemigo.direccionx = 1
+		colision2 = True
+	if plataforma.check_colisiones(enemigo) is not True and colision2 == True:
+		colision2 = False
 
 def barra_hp_izquierda(screen, x, y, hp, color):
 	largo = 165
@@ -443,7 +465,7 @@ def play(p1, p2, tourney, cont):
 	z = -1
 	name = {"Mercurio": "MERCURY", "Venus": "VENUS", "La Tierra": "EARTH", "Marte": "MARS", "Jupiter": "JUPITER", "Saturno": "SATURN", "Urano": "URANUS", "Neptuno": "NEPTUNE"}
 	while True:
-		global colision, musica, i, separar
+		global colision, colision2, musica, i, separar
 
 		if z == -1:
 			if musica != "Batalla":
@@ -453,6 +475,7 @@ def play(p1, p2, tourney, cont):
 				mixer.music.play(-1)
 				musica = "Batalla"
 			colision = False
+			colision2 = False
 			i = 0
 			separar = True
 			z = 0
