@@ -222,7 +222,7 @@ class Bola(Objeto):
 			self.vidas = self.vidas / 2
 			mercurio_sound.play()
 			separar = False
-		if self != secundaria:
+		if self != secundaria and secundaria.vidas > 0:
 			secundaria.Movimiento(enemigo)
 			Chocar2(secundaria, enemigo)
 			if self.color == (0,0,255):
@@ -288,7 +288,7 @@ def Chocar(plataforma, enemigo):
 
 def Chocar2(plataforma, enemigo):
 	global colision2
-	if plataforma.check_colisiones(enemigo) == True and colision == False:
+	if plataforma.check_colisiones(enemigo) == True and colision2 == False:
 		plataforma.vidas -= 5
 		enemigo.vidas -= 5
 		if plataforma.ancho >= 65 and plataforma.ancho < 80:
